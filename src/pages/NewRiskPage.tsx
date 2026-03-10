@@ -5,6 +5,7 @@ import { useRiskStore } from '../store/riskStore'
 import { useVotingStore } from '../store/votingStore'
 import { users } from '../mock-data/users'
 import type { VoteParticipant } from '../mock-data/voting-sessions'
+import type { ReviewPeriod } from '../mock-data/risks'
 
 const CATEGORIES = [
   'Технологічний / Кібер',
@@ -29,6 +30,7 @@ export function NewRiskPage() {
     category: CATEGORIES[0],
     causes: '',
     consequences: '',
+    reviewPeriod: '' as ReviewPeriod | '',
   })
 
   const voters = users.filter((u) => u.role === 'voter')
@@ -46,6 +48,7 @@ export function NewRiskPage() {
       category: form.category,
       causes: form.causes || undefined,
       consequences: form.consequences || undefined,
+      reviewPeriod: form.reviewPeriod || undefined,
       status: 'voting_in_progress',
       likelihood: null,
       impact: null,
@@ -143,6 +146,22 @@ export function NewRiskPage() {
               rows={2}
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Термін перегляду <span className="text-gray-400 font-normal text-xs">(необов'язково)</span>
+            </label>
+            <select
+              value={form.reviewPeriod}
+              onChange={(e) => setForm({ ...form, reviewPeriod: e.target.value as ReviewPeriod | '' })}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">— не встановлено —</option>
+              <option value="1m">1 місяць</option>
+              <option value="3m">3 місяці (квартал)</option>
+              <option value="6m">6 місяців (півріччя)</option>
+              <option value="1y">1 рік</option>
+            </select>
           </div>
           <button
             onClick={() => setStep(1)}

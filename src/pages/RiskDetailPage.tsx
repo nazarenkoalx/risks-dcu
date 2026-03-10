@@ -14,7 +14,8 @@ import { ActionPlanFormModal } from '../components/ActionPlanFormModal'
 import { ActionPlanApproversModal } from '../components/ActionPlanApproversModal'
 import { scenarios } from '../mock-data/scenarios'
 import { users } from '../mock-data/users'
-import type { VoteParticipant, ReviewPeriod } from '../mock-data/voting-sessions'
+import type { VoteParticipant } from '../mock-data/voting-sessions'
+import type { ReviewPeriod } from '../mock-data/risks'
 import type { ActionPlan } from '../mock-data/action-plans'
 
 type Tab = 'overview' | 'scenarios' | 'action_plan'
@@ -91,8 +92,8 @@ export function RiskDetailPage() {
   const owner = users.find((u) => u.id === risk.owner)
   const plan = getPlanByRiskId(risk.id)
 
-  const handleStartVoting = (participants: VoteParticipant[], reviewPeriod?: ReviewPeriod) => {
-    startSession(risk.id, participants, reviewPeriod)
+  const handleStartVoting = (participants: VoteParticipant[]) => {
+    startSession(risk.id, participants)
     updateRiskStatus(risk.id, 'voting_in_progress')
     setShowVotingModal(false)
   }
@@ -115,8 +116,8 @@ export function RiskDetailPage() {
     const updated = respondToPlan(plan.id, currentUser.id, approved, planComment.trim() || undefined)
     if (updated.status === 'approved') {
       updateRiskStatus(risk.id, 'monitoring')
-      if (session?.reviewPeriod && updated.approvedAt) {
-        updateRiskReviewDate(risk.id, calcReviewDate(updated.approvedAt, session.reviewPeriod))
+      if (risk.reviewPeriod && updated.approvedAt) {
+        updateRiskReviewDate(risk.id, calcReviewDate(updated.approvedAt, risk.reviewPeriod))
       }
     }
     setPlanResponseDone(true)

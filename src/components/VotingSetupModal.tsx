@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import { X } from 'lucide-react'
 import { users } from '../mock-data/users'
-import type { VoteParticipant, ReviewPeriod } from '../mock-data/voting-sessions'
+import type { VoteParticipant } from '../mock-data/voting-sessions'
 
 interface VotingSetupModalProps {
   onClose: () => void
-  onStart: (participants: VoteParticipant[], reviewPeriod?: ReviewPeriod) => void
+  onStart: (participants: VoteParticipant[]) => void
 }
 
 const DEFAULT_WEIGHTS: Record<string, number> = { u2: 3, u3: 2, u4: 1 }
@@ -16,7 +16,6 @@ export function VotingSetupModal({ onClose, onStart }: VotingSetupModalProps) {
     voters.filter((u) => u.defaultSelected).map((u) => u.id)
   )
   const [weights, setWeights] = useState<Record<string, number>>(DEFAULT_WEIGHTS)
-  const [reviewPeriod, setReviewPeriod] = useState<ReviewPeriod | undefined>(undefined)
 
   const totalWeight = Object.entries(weights)
     .filter(([id]) => selected.includes(id))
@@ -29,7 +28,7 @@ export function VotingSetupModal({ onClose, onStart }: VotingSetupModalProps) {
       name: users.find((u) => u.id === id)?.name ?? id,
       voted: false,
     }))
-    onStart(participants, reviewPeriod)
+    onStart(participants)
   }
 
   return (
@@ -79,23 +78,6 @@ export function VotingSetupModal({ onClose, onStart }: VotingSetupModalProps) {
               </div>
             )
           })}
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-xs font-medium text-gray-500 mb-1">
-            Термін перегляду <span className="text-gray-400 font-normal">(необов'язково)</span>
-          </label>
-          <select
-            value={reviewPeriod ?? ''}
-            onChange={(e) => setReviewPeriod((e.target.value as ReviewPeriod) || undefined)}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          >
-            <option value="">— не встановлено —</option>
-            <option value="1m">1 місяць</option>
-            <option value="3m">3 місяці (квартал)</option>
-            <option value="6m">6 місяців (півріччя)</option>
-            <option value="1y">1 рік</option>
-          </select>
         </div>
 
         <button
