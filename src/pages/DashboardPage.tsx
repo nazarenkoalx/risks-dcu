@@ -10,6 +10,7 @@ export function DashboardPage() {
   const navigate = useNavigate()
 
   const total = risks.length
+  const assessed = risks.filter((r) => r.score !== null).length
   const critical = risks.filter((r) => (r.score ?? 0) >= 15).length
   const pendingVoting = risks.filter((r) => r.status === 'voting_in_progress').length
   const withDispersion = risks.filter((r) => r.dispersionFlag).length
@@ -20,10 +21,10 @@ export function DashboardPage() {
     .slice(0, 5)
 
   const kpiCards = [
-    { label: 'Всього ризиків',          value: total,         icon: Shield,        color: '#003DA5' },
-    { label: 'Критичних',              value: critical,      icon: AlertTriangle, color: '#C8102E' },
-    { label: 'Очікують голосування',   value: pendingVoting, icon: Vote,          color: '#E65100' },
-    { label: 'Розходження думок',      value: withDispersion,icon: TrendingUp,    color: '#8C8ECC' },
+    { label: 'Всього ризиків',         value: total,          sub: `оцінено ${assessed}`, icon: Shield,        color: '#003DA5' },
+    { label: 'Критичних',              value: critical,       sub: null,                   icon: AlertTriangle, color: '#C8102E' },
+    { label: 'Очікують голосування',   value: pendingVoting,  sub: null,                   icon: Vote,          color: '#E65100' },
+    { label: 'Розходження думок',      value: withDispersion, sub: null,                   icon: TrendingUp,    color: '#8C8ECC' },
   ]
 
   return (
@@ -32,12 +33,17 @@ export function DashboardPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {kpiCards.map(({ label, value, icon: Icon, color }) => (
+        {kpiCards.map(({ label, value, sub, icon: Icon, color }) => (
           <div key={label} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-2xl font-bold text-gray-900">{value}</p>
                 <p className="text-sm text-gray-500 mt-1">{label}</p>
+                {sub && (
+                  <p className="text-xs mt-1 font-medium" style={{ color }}>
+                    {sub}
+                  </p>
+                )}
               </div>
               <div
                 className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"

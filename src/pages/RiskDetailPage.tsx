@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { ChevronLeft, ChevronDown, ChevronUp, ClipboardList, CheckCircle, XCircle, Clock, Calendar } from 'lucide-react'
+import { ChevronLeft, ChevronDown, ChevronUp, ClipboardList, CheckCircle, XCircle, Clock, Calendar, History, RefreshCw } from 'lucide-react'
 import { useRiskStore } from '../store/riskStore'
 import { useVotingStore } from '../store/votingStore'
 import { useAuthStore } from '../store/authStore'
@@ -69,7 +69,7 @@ export function RiskDetailPage() {
   const [searchParams] = useSearchParams()
 
   const { risks, updateRiskStatus, updateRiskScore, updateRiskReviewDate } = useRiskStore()
-  const { getSessionByRiskId, startSession, closeSession } = useVotingStore()
+  const { getSessionByRiskId, getAllSessionsByRiskId, startSession, closeSession } = useVotingStore()
   const { currentUser } = useAuthStore()
   const { getPlanByRiskId, respondToPlan } = useActionPlanStore()
 
@@ -83,11 +83,13 @@ export function RiskDetailPage() {
   const [planComment, setPlanComment] = useState('')
   const [planResponseDone, setPlanResponseDone] = useState(false)
   const [breakdownExpanded, setBreakdownExpanded] = useState(false)
+  const [historyExpanded, setHistoryExpanded] = useState(false)
 
   const risk = risks.find((r) => r.id === id)
   if (!risk) return <div className="p-6">Ризик не знайдено</div>
 
   const session = getSessionByRiskId(risk.id)
+  const allSessions = getAllSessionsByRiskId(risk.id)
   const riskScenarios = scenarios.filter((s) => s.riskId === risk.id)
   const owner = users.find((u) => u.id === risk.owner)
   const plan = getPlanByRiskId(risk.id)
@@ -173,10 +175,7 @@ export function RiskDetailPage() {
           >
             {t.label}
             {t.id === 'action_plan' && hasPendingResponse && (
-              <span
-                className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-white text-[10px] font-bold"
-                style={{ background: '#C8102E' }}
-              >
+              <span className="ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-white text-[10px] font-bold bg-brand-red">
                 !
               </span>
             )}
@@ -231,12 +230,25 @@ export function RiskDetailPage() {
             {risk.status === 'draft' && currentUser.role === 'coordinator' && (
               <button
                 onClick={() => setShowVotingModal(true)}
-                className="px-4 py-2 rounded-lg text-white text-sm font-medium"
-                style={{ background: '#003DA5' }}
+                className="px-4 py-2 rounded-lg text-white text-sm font-medium bg-brand-royal"
               >
                 Запустити голосування
               </button>
             )}
+
+            {/* Re-vote button for assessed/in_treatment/monitoring */}
+            {(risk.status === 'assessed' || risk.status === 'in_treatment' || risk.status === 'monitoring') &&
+              currentUser.role === 'coordinator' && (
+                <div className="flex justify-end pt-1">
+                  <button
+                    onClick={() => setShowVotingModal(true)}
+                    className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors border border-gray-200 rounded-lg px-3 py-1.5 hover:border-gray-300"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    Провести повторне голосування
+                  </button>
+                </div>
+              )}
 
             {risk.status === 'voting_in_progress' && session && (
               <div className="space-y-4">
@@ -246,8 +258,8 @@ export function RiskDetailPage() {
                   </div>
                   <div className="w-full bg-gray-100 rounded-full h-2">
                     <div
-                      className="h-2 rounded-full transition-all"
-                      style={{ width: `${totalCount > 0 ? (votedCount / totalCount) * 100 : 0}%`, background: '#9ACEEB' }}
+                      className="h-2 rounded-full transition-all bg-brand-sky"
+                      style={{ width: `${totalCount > 0 ? (votedCount / totalCount) * 100 : 0}%` }}
                     />
                   </div>
                 </div>
@@ -265,8 +277,7 @@ export function RiskDetailPage() {
                 {currentUser.role === 'coordinator' && votedCount >= 1 && (
                   <button
                     onClick={handleCloseSession}
-                    className="px-4 py-2 rounded-lg text-white text-sm font-medium mt-2"
-                    style={{ background: '#003DA5' }}
+                    className="px-4 py-2 rounded-lg text-white text-sm font-medium mt-2 bg-brand-royal"
                   >
                     Завершити та розрахувати
                   </button>
@@ -349,8 +360,7 @@ export function RiskDetailPage() {
                 {risk.status === 'assessed' && currentUser.role === 'coordinator' && (
                   <button
                     onClick={handleApproveScore}
-                    className="px-4 py-2 rounded-lg text-white text-sm font-medium"
-                    style={{ background: '#003DA5' }}
+                    className="px-4 py-2 rounded-lg text-white text-sm font-medium bg-brand-royal"
                   >
                     Затвердити скор → Створити план дій
                   </button>
@@ -358,6 +368,76 @@ export function RiskDetailPage() {
               </div>
             )}
           </div>
+
+          {/* Voting History — shown when 2+ sessions exist */}
+          {allSessions.length >= 2 && (
+            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm">
+              <button
+                onClick={() => setHistoryExpanded((v) => !v)}
+                className="flex items-center justify-between w-full"
+              >
+                <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                  <History className="w-4 h-4 text-gray-400" />
+                  Історія голосувань
+                  <span className="ml-1 text-xs font-normal text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">
+                    {allSessions.length}
+                  </span>
+                </div>
+                {historyExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-gray-400" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-gray-400" />
+                )}
+              </button>
+
+              {historyExpanded && (
+                <div className="mt-4 space-y-3">
+                  {[...allSessions].reverse().map((s, idx) => (
+                    <div key={s.id} className="rounded-lg border border-gray-100 p-3">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-medium text-gray-500">
+                          Голосування #{allSessions.length - idx}
+                        </span>
+                        <div className="flex items-center gap-2">
+                          {s.status === 'completed' ? (
+                            <span className="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full">Завершено</span>
+                          ) : (
+                            <span className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">Активне</span>
+                          )}
+                          <span className="text-xs text-gray-400">
+                            {new Date(s.createdAt).toLocaleDateString('uk-UA')}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-4 text-sm">
+                        <span className="text-gray-500 text-xs">
+                          Учасники: {s.participants.map((p) => p.name.split(' ')[0]).join(', ')}
+                        </span>
+                        {s.consensusScore !== undefined && (
+                          <div className="flex items-center gap-2 ml-auto">
+                            <span className="text-xs text-gray-400">
+                              Ймов. {s.consensusLikelihood} · Вплив {s.consensusImpact}
+                            </span>
+                            <span
+                              className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                                (s.consensusScore ?? 0) >= 15
+                                  ? 'score-pill-critical'
+                                  : (s.consensusScore ?? 0) >= 10
+                                  ? 'score-pill-high'
+                                  : 'score-pill-low'
+                              }`}
+                            >
+                              Скор: {s.consensusScore}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -398,11 +478,8 @@ export function RiskDetailPage() {
           {/* No plan yet — coordinator creates */}
           {!plan && risk.status === 'in_treatment' && currentUser.role === 'coordinator' && (
             <div className="bg-white rounded-xl p-8 border border-gray-100 shadow-sm text-center">
-              <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4"
-                style={{ background: '#E8F4FA' }}
-              >
-                <ClipboardList className="w-6 h-6" style={{ color: '#003DA5' }} />
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 bg-sky-50">
+                <ClipboardList className="w-6 h-6 text-brand-royal" />
               </div>
               <p className="font-medium text-gray-700 mb-1">План дій не створено</p>
               <p className="text-sm text-gray-400 mb-4">
@@ -410,8 +487,7 @@ export function RiskDetailPage() {
               </p>
               <button
                 onClick={() => setShowPlanFormModal(true)}
-                className="px-5 py-2.5 rounded-lg text-white text-sm font-medium"
-                style={{ background: '#003DA5' }}
+                className="px-5 py-2.5 rounded-lg text-white text-sm font-medium bg-brand-royal"
               >
                 Створити план дій
               </button>
@@ -436,8 +512,7 @@ export function RiskDetailPage() {
               </div>
               <button
                 onClick={() => setShowApproversModal(true)}
-                className="px-4 py-2.5 rounded-lg text-white text-sm font-medium"
-                style={{ background: '#003DA5' }}
+                className="px-4 py-2.5 rounded-lg text-white text-sm font-medium bg-brand-royal"
               >
                 Відправити на погодження
               </button>
@@ -453,7 +528,7 @@ export function RiskDetailPage() {
                     <h3 className="font-semibold text-gray-800">{plan.title}</h3>
                     {plan.description && <p className="text-sm text-gray-500 mt-1">{plan.description}</p>}
                   </div>
-                  <span className="text-xs px-2 py-1 rounded-full font-medium" style={{ background: '#FFF7ED', color: '#C2410C' }}>
+                  <span className="text-xs px-2 py-1 rounded-full font-medium bg-orange-50 text-orange-700">
                     На погодженні
                   </span>
                 </div>
@@ -470,11 +545,8 @@ export function RiskDetailPage() {
                 </h3>
                 <div className="w-full bg-gray-100 rounded-full h-1.5 mb-4">
                   <div
-                    className="h-1.5 rounded-full transition-all"
-                    style={{
-                      width: `${plan.approvers.length > 0 ? (plan.approvals.length / plan.approvers.length) * 100 : 0}%`,
-                      background: '#9ACEEB',
-                    }}
+                    className="h-1.5 rounded-full transition-all bg-brand-sky"
+                    style={{ width: `${plan.approvers.length > 0 ? (plan.approvals.length / plan.approvers.length) * 100 : 0}%` }}
                   />
                 </div>
                 <div className="space-y-2">
@@ -570,8 +642,7 @@ export function RiskDetailPage() {
                     </button>
                     <button
                       onClick={() => handleRespondToPlan(true)}
-                      className="flex-1 py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2"
-                      style={{ background: '#003DA5' }}
+                      className="flex-1 py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2 bg-brand-royal"
                     >
                       <CheckCircle className="w-4 h-4" />
                       Погодити

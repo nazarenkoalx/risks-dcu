@@ -9,6 +9,7 @@ import { NewRiskPage } from './pages/NewRiskPage'
 import { VotingPage } from './pages/VotingPage'
 import { VotingResultsPage } from './pages/VotingResultsPage'
 import { ActionPlanPage } from './pages/ActionPlanPage'
+import { MonitoringPage } from './pages/MonitoringPage'
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path="/risks/:id" element={<RiskDetailPage />} />
           <Route path="/risks/:id/results" element={<VotingResultsPage />} />
           <Route path="/action-plan" element={<ActionPlanPage />} />
+          <Route path="/monitoring" element={<MonitoringPage />} />
         </Route>
 
         {/* Voting routes — minimal layout */}

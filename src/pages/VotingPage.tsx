@@ -12,6 +12,15 @@ const LABELS: Record<number, string> = {
   5: 'Критичний',
 }
 
+// Score color gradient: 1=green, 2=yellow-green, 3=brand-royal, 4=orange, 5=brand-red
+const SCORE_COLORS: Record<number, { bg: string; border: string; text: string }> = {
+  1: { bg: '#16A34A', border: '#16A34A', text: '#ffffff' },
+  2: { bg: '#65A30D', border: '#65A30D', text: '#ffffff' },
+  3: { bg: '#003DA5', border: '#003DA5', text: '#ffffff' },
+  4: { bg: '#EA580C', border: '#EA580C', text: '#ffffff' },
+  5: { bg: '#C8102E', border: '#C8102E', text: '#ffffff' },
+}
+
 function ScoreSelector({
   label,
   min: minLabel,
@@ -30,24 +39,33 @@ function ScoreSelector({
       <div className="flex items-center justify-between">
         <span className="text-sm font-medium text-gray-700">{label}</span>
         {value > 0 && (
-          <span className="text-xs font-semibold" style={{ color: '#003DA5' }}>{LABELS[value]}</span>
+          <span
+            className="text-xs font-semibold px-2 py-0.5 rounded-full text-white"
+            style={{ background: SCORE_COLORS[value].bg }}
+          >
+            {LABELS[value]}
+          </span>
         )}
       </div>
       <div className="flex gap-2">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <button
-            key={n}
-            onClick={() => onChange(n)}
-            className="flex-1 h-12 rounded-lg text-lg font-bold border-2 transition-all"
-            style={{
-              background: value === n ? '#003DA5' : 'white',
-              color: value === n ? 'white' : '#64748b',
-              borderColor: value === n ? '#003DA5' : '#E2E8F0',
-            }}
-          >
-            {n}
-          </button>
-        ))}
+        {[1, 2, 3, 4, 5].map((n) => {
+          const isActive = value === n
+          const colors = SCORE_COLORS[n]
+          return (
+            <button
+              key={n}
+              onClick={() => onChange(n)}
+              className="flex-1 h-12 rounded-lg text-lg font-bold border-2 transition-all"
+              style={{
+                background: isActive ? colors.bg : 'white',
+                color: isActive ? colors.text : '#64748b',
+                borderColor: isActive ? colors.border : '#E2E8F0',
+              }}
+            >
+              {n}
+            </button>
+          )
+        })}
       </div>
       <div className="flex justify-between text-xs text-gray-400">
         <span>{minLabel}</span>
@@ -149,8 +167,7 @@ export function VotingPage() {
         <button
           onClick={handleSubmit}
           disabled={!canSubmit}
-          className="w-full py-3 rounded-xl text-white font-semibold text-base disabled:opacity-40 transition-opacity"
-          style={{ background: '#003DA5' }}
+          className="w-full py-3 rounded-xl text-white font-semibold text-base disabled:opacity-40 transition-opacity bg-brand-royal"
         >
           Надіслати оцінку
         </button>

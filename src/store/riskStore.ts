@@ -4,6 +4,7 @@ import { risks as initialRisks, type Risk, type RiskStatus } from '../mock-data/
 interface RiskState {
   risks: Risk[]
   addRisk: (risk: Omit<Risk, 'id' | 'createdAt' | 'score'>) => Risk
+  addRisks: (risks: Omit<Risk, 'id' | 'createdAt' | 'score'>[]) => number
   updateRiskStatus: (riskId: string, status: RiskStatus) => void
   updateRiskScore: (riskId: string, likelihood: number, impact: number, score: number, dispersionFlag?: boolean) => void
   updateRiskReviewDate: (riskId: string, reviewDate: string) => void
@@ -21,6 +22,18 @@ export const useRiskStore = create<RiskState>((set) => ({
     }
     set((state) => ({ risks: [...state.risks, newRisk] }))
     return newRisk
+  },
+
+  addRisks: (dataList) => {
+    const now = Date.now()
+    const newRisks: Risk[] = dataList.map((data, i) => ({
+      ...data,
+      id: `r${now + i}`,
+      score: null,
+      createdAt: new Date().toISOString().split('T')[0],
+    }))
+    set((state) => ({ risks: [...state.risks, ...newRisks] }))
+    return newRisks.length
   },
 
   updateRiskStatus: (riskId, status) => {

@@ -10,6 +10,7 @@ import {
 interface VotingState {
   sessions: VotingSession[]
   getSessionByRiskId: (riskId: string) => VotingSession | undefined
+  getAllSessionsByRiskId: (riskId: string) => VotingSession[]
   getPendingVotesCount: (userId: string) => number
   startSession: (riskId: string, participants: VoteParticipant[], reviewPeriod?: ReviewPeriod) => VotingSession
   addVote: (sessionId: string, vote: Vote) => void
@@ -32,6 +33,9 @@ export const useVotingStore = create<VotingState>((set, get) => ({
     const all = get().sessions.filter((s) => s.riskId === riskId)
     return all.find((s) => s.status === 'open') ?? all[all.length - 1]
   },
+
+  getAllSessionsByRiskId: (riskId) =>
+    get().sessions.filter((s) => s.riskId === riskId),
 
   getPendingVotesCount: (userId) =>
     get().sessions.filter(
