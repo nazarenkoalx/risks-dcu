@@ -10,11 +10,11 @@ import { RiskStatusBadge } from '../components/RiskStatusBadge'
 import { DispersionAlert } from '../components/DispersionAlert'
 import { VotingDistribution } from '../components/VotingDistribution'
 import { VotingSetupModal } from '../components/VotingSetupModal'
+import type { StartVotingParams } from '../components/VotingSetupModal'
 import { ActionPlanFormModal } from '../components/ActionPlanFormModal'
 import { ActionPlanApproversModal } from '../components/ActionPlanApproversModal'
 import { scenarios } from '../mock-data/scenarios'
 import { users } from '../mock-data/users'
-import type { VoteParticipant } from '../mock-data/voting-sessions'
 import type { ReviewPeriod } from '../mock-data/risks'
 import type { ActionPlan } from '../mock-data/action-plans'
 
@@ -94,8 +94,8 @@ export function RiskDetailPage() {
   const owner = users.find((u) => u.id === risk.owner)
   const plan = getPlanByRiskId(risk.id)
 
-  const handleStartVoting = (participants: VoteParticipant[]) => {
-    startSession(risk.id, participants)
+  const handleStartVoting = ({ participants, mode }: StartVotingParams) => {
+    startSession(risk.id, participants, mode)
     updateRiskStatus(risk.id, 'voting_in_progress')
     setShowVotingModal(false)
   }

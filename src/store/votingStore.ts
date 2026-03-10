@@ -4,6 +4,7 @@ import {
   type VotingSession,
   type Vote,
   type VoteParticipant,
+  type VotingMode,
   type ReviewPeriod,
 } from '../mock-data/voting-sessions'
 
@@ -12,7 +13,7 @@ interface VotingState {
   getSessionByRiskId: (riskId: string) => VotingSession | undefined
   getAllSessionsByRiskId: (riskId: string) => VotingSession[]
   getPendingVotesCount: (userId: string) => number
-  startSession: (riskId: string, participants: VoteParticipant[], reviewPeriod?: ReviewPeriod) => VotingSession
+  startSession: (riskId: string, participants: VoteParticipant[], mode?: VotingMode, reviewPeriod?: ReviewPeriod) => VotingSession
   addVote: (sessionId: string, vote: Vote) => void
   closeSession: (sessionId: string) => VotingSession
 }
@@ -42,11 +43,12 @@ export const useVotingStore = create<VotingState>((set, get) => ({
       (s) => s.status === 'open' && s.participants.some((p) => p.userId === userId && !p.voted)
     ).length,
 
-  startSession: (riskId, participants, reviewPeriod) => {
+  startSession: (riskId, participants, mode = 'collegial', reviewPeriod) => {
     const newSession: VotingSession = {
       id: `vs${Date.now()}`,
       riskId,
       status: 'open',
+      mode,
       participants,
       votes: [],
       reviewPeriod,

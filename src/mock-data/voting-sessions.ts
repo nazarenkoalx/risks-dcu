@@ -17,10 +17,13 @@ export type SessionStatus = 'open' | 'completed'
 
 export type ReviewPeriod = '1m' | '3m' | '6m' | '1y'
 
+export type VotingMode = 'individual' | 'collegial'
+
 export interface VotingSession {
   id: string
   riskId: string
   status: SessionStatus
+  mode?: VotingMode
   participants: VoteParticipant[]
   votes: Vote[]
   consensusLikelihood?: number

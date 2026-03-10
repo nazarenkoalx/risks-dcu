@@ -59,39 +59,60 @@ export function VotingResultsPage() {
         </div>
       )}
 
-      {/* Distribution Charts */}
-      <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-5 mb-5">
-        <h3 className="text-sm font-semibold text-gray-700">Розподіл голосів</h3>
-        <VotingDistribution
-          votes={session.votes}
-          participants={session.participants}
-          field="likelihood"
-          label="Ймовірність"
-          weightedAvg={session.consensusLikelihood!}
-        />
-        <VotingDistribution
-          votes={session.votes}
-          participants={session.participants}
-          field="impact"
-          label="Вплив"
-          weightedAvg={session.consensusImpact!}
-        />
-      </div>
-
-      {/* Comments */}
-      {session.votes.some((v) => v.rationale) && (
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-3 mb-5">
-          <h3 className="text-sm font-semibold text-gray-700">Коментарі учасників</h3>
-          {session.votes.filter((v) => v.rationale).map((v) => {
-            const p = session.participants.find((p) => p.userId === v.userId)
-            return (
-              <div key={v.userId} className="bg-gray-50 rounded-lg p-3">
-                <p className="text-xs font-medium text-gray-700 mb-1">{p?.name}</p>
-                <p className="text-sm text-gray-600">{v.rationale}</p>
-              </div>
-            )
-          })}
+      {/* Collegial: participants list instead of vote distribution */}
+      {session.mode === 'collegial' ? (
+        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm mb-5">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-xs font-semibold text-gray-700">Учасники наради</span>
+            <span className="text-[11px] bg-blue-50 text-brand-royal px-2 py-0.5 rounded-full font-medium">
+              Колегіальне рішення
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {session.participants.map((p) => (
+              <span key={p.userId} className="text-xs bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full">
+                {p.name}
+              </span>
+            ))}
+          </div>
         </div>
+      ) : (
+        <>
+          {/* Distribution Charts */}
+          <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-5 mb-5">
+            <h3 className="text-sm font-semibold text-gray-700">Розподіл голосів</h3>
+            <VotingDistribution
+              votes={session.votes}
+              participants={session.participants}
+              field="likelihood"
+              label="Ймовірність"
+              weightedAvg={session.consensusLikelihood!}
+            />
+            <VotingDistribution
+              votes={session.votes}
+              participants={session.participants}
+              field="impact"
+              label="Вплив"
+              weightedAvg={session.consensusImpact!}
+            />
+          </div>
+
+          {/* Comments */}
+          {session.votes.some((v) => v.rationale) && (
+            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-3 mb-5">
+              <h3 className="text-sm font-semibold text-gray-700">Коментарі учасників</h3>
+              {session.votes.filter((v) => v.rationale).map((v) => {
+                const p = session.participants.find((p) => p.userId === v.userId)
+                return (
+                  <div key={v.userId} className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-xs font-medium text-gray-700 mb-1">{p?.name}</p>
+                    <p className="text-sm text-gray-600">{v.rationale}</p>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </>
       )}
 
       {/* Approve button */}
