@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import type { Risk } from '../mock-data/risks'
+import styles from './RiskHeatMap.module.css'
 
 interface RiskHeatMapProps {
   risks: Risk[]
@@ -45,14 +46,14 @@ export function RiskHeatMap({ risks }: RiskHeatMapProps) {
   const TOTAL = CELL_SIZE * 5 + LABEL_SIZE
 
   return (
-    <div className="overflow-x-auto">
-      <svg width={TOTAL} height={TOTAL} className="select-none">
+    <div className={styles.container}>
+      <svg width={TOTAL} height={TOTAL} className={styles.svg}>
         {/* Y-axis label (Likelihood) */}
         <text
           x={LABEL_SIZE / 2}
           y={TOTAL / 2 + LABEL_SIZE}
           textAnchor="middle"
-          className="text-xs fill-gray-500"
+          className={styles.axisLabel}
           transform={`rotate(-90, ${LABEL_SIZE / 2}, ${TOTAL / 2 + LABEL_SIZE})`}
           fontSize={11}
         >
@@ -61,7 +62,7 @@ export function RiskHeatMap({ risks }: RiskHeatMapProps) {
 
         {/* Grid */}
         {Array.from({ length: 5 }, (_, li) => {
-          const displayLi = 4 - li // invert: 5 at top, 1 at bottom
+          const displayLi = 4 - li
           return Array.from({ length: 5 }, (_, im) => {
             const cellRisks = grid[displayLi][im]
             const level = getCellLevel(displayLi + 1, im + 1)
@@ -73,7 +74,7 @@ export function RiskHeatMap({ risks }: RiskHeatMapProps) {
               <g
                 key={`${li}-${im}`}
                 onClick={() => handleCellClick(displayLi, im)}
-                className={cellRisks.length > 0 ? 'cursor-pointer' : ''}
+                className={cellRisks.length > 0 ? styles.clickable : ''}
               >
                 <rect
                   x={x}

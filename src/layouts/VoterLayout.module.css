@@ -1,0 +1,20 @@
+.root   { @apply min-h-screen bg-slate-50; }
+.header {
+  @apply flex items-center justify-between px-6 py-4 bg-brand-navy;
+}
+.logo   { @apply text-white text-lg font-bold; }
+
+.headerRight { @apply flex items-center gap-3; }
+.switcherRow { @apply flex items-center gap-1.5 mr-2; }
+.switcherBtn {
+  @apply w-9 h-9 rounded-full text-xs font-bold flex items-center justify-center transition-all border-2;
+}
+.switcherBtnActive   { @apply bg-brand-royal border-brand-sky text-white; }
+.switcherBtnInactive { background: rgba(255,255,255,0.1); @apply border-transparent text-white; }
+
+.userBtn   { @apply relative cursor-pointer; }
+.userPill  { @apply flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5; }
+.userAvatar { @apply w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-xs text-white font-bold; }
+.userInfo   {}
+.userNameText { @apply text-white text-xs font-medium; }
+.userTitleText { @apply text-xs text-brand-sky; }

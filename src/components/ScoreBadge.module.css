@@ -1,0 +1,18 @@
+.noScore {
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-500;
+}
+
+.badge {
+  @apply inline-flex items-center gap-1.5 font-semibold;
+}
+
+.sizeLg { @apply text-2xl px-4 py-2 rounded-xl; }
+.sizeMd { @apply text-sm px-2.5 py-1 rounded-md; }
+.sizeSm { @apply text-xs px-2 py-0.5 rounded; }
+
+.label { @apply font-normal opacity-75; }
+
+.levelCritical { background: #FDECEA; color: #C8102E; }
+.levelHigh     { background: #FFF3E0; color: #E65100; }
+.levelMedium   { background: #ECEEF8; color: #5557A0; }
+.levelLow      { background: #E8F4FA; color: #003B5C; }

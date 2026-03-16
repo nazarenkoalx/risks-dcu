@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { users } from '../mock-data/users'
+import styles from './LoginPage.module.css'
 
 const SLIDES = [
   {
@@ -46,35 +47,26 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className={styles.root}>
       {/* Left panel */}
-      <div
-        className="hidden md:flex md:w-1/2 flex-col justify-center px-12 py-16"
-        style={{ background: '#003B5C' }}
-      >
-        <div className="max-w-sm">
-          <div key={slide} className="slide-fade-in">
-            <p
-              className="text-xs font-bold tracking-widest uppercase mb-6"
-              style={{ color: '#9ACEEB' }}
-            >
-              {SLIDES[slide].label}
-            </p>
-            <div className="space-y-1">
+      <div className={styles.panel}>
+        <div className={styles.panelInner}>
+          <div key={slide} className={`${styles.slideWrap} slide-fade-in`}>
+            <p className={styles.slideLabel}>{SLIDES[slide].label}</p>
+            <div className={styles.slideLines}>
               {SLIDES[slide].lines.map((line, i) => (
-                <p key={i} className="text-white text-lg leading-relaxed">
+                <p key={i} className={styles.slideLine}>
                   {line || '\u00A0'}
                 </p>
               ))}
             </div>
           </div>
-          <div className="flex gap-2 mt-8">
+          <div className={styles.dots}>
             {SLIDES.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setSlide(i)}
-                className="w-2 h-2 rounded-full transition-all"
-                style={{ background: i === slide ? '#9ACEEB' : 'rgba(156,174,235,0.3)' }}
+                className={`${styles.dot} ${i === slide ? styles.dotActive : styles.dotInactive}`}
               />
             ))}
           </div>
@@ -82,30 +74,23 @@ export function LoginPage() {
       </div>
 
       {/* Right panel */}
-      <div className="flex-1 flex flex-col justify-center px-8 md:px-16 bg-white">
-        <div className="max-w-sm mx-auto w-full">
-          <h1 className="text-3xl font-bold mb-1" style={{ color: '#003B5C' }}>RiskBoard</h1>
-          <p className="text-gray-500 mb-8 text-sm">Колегіальна оцінка ризиків</p>
+      <div className={styles.rightPanel}>
+        <div className={styles.rightInner}>
+          <h1 className={styles.appTitle}>RiskBoard</h1>
+          <p className={styles.appSub}>Колегіальна оцінка ризиків</p>
 
-          <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">
-            Увійти як:
-          </p>
-          <div className="space-y-3">
+          <p className={styles.loginLabel}>Увійти як:</p>
+          <div className={styles.userList}>
             {users.map((user) => (
               <button
                 key={user.id}
                 onClick={() => handleLogin(user.id)}
-                className="w-full flex items-center gap-4 p-4 rounded-xl border-2 border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all text-left"
+                className={styles.userBtn}
               >
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                  style={{ background: '#003DA5' }}
-                >
-                  {user.avatar}
-                </div>
+                <div className={styles.userAvatar}>{user.avatar}</div>
                 <div>
-                  <p className="font-semibold text-gray-800">{user.name}</p>
-                  <p className="text-xs text-gray-500">{user.title}</p>
+                  <p className={styles.userName}>{user.name}</p>
+                  <p className={styles.userRole}>{user.title}</p>
                 </div>
               </button>
             ))}

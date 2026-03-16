@@ -1,0 +1,32 @@
+.root   { @apply flex h-screen; }
+
+/* Left panel */
+.panel  {
+  @apply hidden md:flex md:w-1/2 flex-col justify-center px-12 py-16 bg-brand-navy;
+}
+.panelInner  { @apply max-w-sm; }
+.slideWrap    {}
+.slideLabel  { @apply text-xs font-bold tracking-widest uppercase mb-6 text-brand-sky; }
+.slideLines  { @apply space-y-1; }
+.slideLine   { @apply text-white text-lg leading-relaxed; }
+.dots        { @apply flex gap-2 mt-8; }
+.dot         { @apply w-2 h-2 rounded-full transition-all; }
+.dotActive   { background: #9ACEEB; }
+.dotInactive { background: rgba(156,174,235,0.3); }
+
+/* Right panel */
+.rightPanel { @apply flex-1 flex flex-col justify-center px-8 md:px-16 bg-white; }
+.rightInner { @apply max-w-sm mx-auto w-full; }
+.appTitle   { @apply text-3xl font-bold mb-1 text-brand-navy; }
+.appSub     { @apply text-gray-500 mb-8 text-sm; }
+
+.loginLabel { @apply text-xs font-medium text-gray-400 uppercase tracking-wide mb-3; }
+.userList   { @apply space-y-3; }
+.userBtn    {
+  @apply w-full flex items-center gap-4 p-4 rounded-xl border-2 border-gray-100 hover:border-blue-200 hover:bg-blue-50 transition-all text-left;
+}
+.userAvatar {
+  @apply w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 bg-brand-royal;
+}
+.userName { @apply font-semibold text-gray-800; }
+.userRole { @apply text-xs text-gray-500; }

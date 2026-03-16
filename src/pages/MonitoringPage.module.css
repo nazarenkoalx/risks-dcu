@@ -1,0 +1,49 @@
+.page { @apply p-6 space-y-6; }
+
+.pageHeader {}
+.title { @apply text-xl font-semibold text-gray-900; }
+.sub   { @apply text-sm text-gray-500 mt-1; }
+
+.summaryChips { @apply flex flex-wrap gap-3; }
+.chipOverdue  { @apply bg-red-50 border border-red-100 rounded-xl px-4 py-3 flex items-center gap-3; }
+.chipUpcoming { @apply bg-yellow-50 border border-yellow-100 rounded-xl px-4 py-3 flex items-center gap-3; }
+.chipOk       { @apply bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3; }
+.chipIcon     { @apply w-5 h-5 flex-shrink-0; }
+.chipValue    { @apply text-lg font-bold; }
+.chipLabel    { @apply text-xs; }
+.chipValueOverdue  { @apply text-red-700; }
+.chipLabelOverdue  { @apply text-red-500; }
+.chipValueUpcoming { @apply text-yellow-700; }
+.chipLabelUpcoming { @apply text-yellow-500; }
+.chipValueOk  { @apply text-green-700; }
+.chipLabelOk  { @apply text-green-500; }
+
+.emptyCard  { @apply bg-white rounded-xl p-12 border border-gray-100 text-center; }
+.emptyIcon  { @apply w-10 h-10 text-green-400 mx-auto mb-3; }
+.emptyTitle { @apply font-medium text-gray-700; }
+.emptySub   { @apply text-sm text-gray-400 mt-1; }
+
+.section      { @apply space-y-3; }
+.sectionTitleOverdue  { @apply text-sm font-semibold text-red-700 flex items-center gap-2; }
+.sectionTitleUpcoming { @apply text-sm font-semibold text-yellow-700 flex items-center gap-2; }
+
+.tableCardRed { @apply bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden; }
+.tableCard    { @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden; }
+.table        { @apply w-full text-sm; }
+.thead        { }
+.theadRow     { @apply border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide; }
+.th           { @apply text-left px-5 py-3 font-medium; }
+.thMd         { @apply text-left px-4 py-3 font-medium hidden md:table-cell; }
+.thSm         { @apply text-left px-4 py-3 font-medium; }
+
+.trOverdue  { @apply border-b border-gray-50 last:border-0 hover:bg-red-50/30 cursor-pointer transition-colors; }
+.trUpcoming { @apply border-b border-gray-50 last:border-0 hover:bg-gray-50 cursor-pointer transition-colors; }
+.tdName     { @apply px-5 py-3.5 font-medium text-gray-800; }
+.tdCat      { @apply px-4 py-3.5 text-gray-500 hidden md:table-cell; }
+.tdCell     { @apply px-4 py-3.5; }
+
+/* Review badges */
+.reviewOverdue  { @apply inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-red-50 text-red-700; }
+.reviewSoon     { @apply inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-orange-50 text-orange-700; }
+.reviewUpcoming { @apply inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700; }
+.reviewIcon     { @apply w-3 h-3; }

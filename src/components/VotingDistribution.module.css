@@ -1,0 +1,17 @@
+.container  { @apply space-y-2; }
+.header     { @apply flex items-center justify-between; }
+.label      { @apply text-sm font-medium text-gray-700; }
+.avg        { @apply text-xs text-gray-500; }
+
+.row        { @apply flex items-center gap-3; }
+.userName   { @apply text-xs text-gray-600 w-28 truncate; }
+.weight     { @apply text-xs text-gray-400 w-8 text-center; }
+.barTrack   { @apply flex-1 bg-gray-100 rounded-full h-5 relative; }
+
+.barFill {
+  @apply h-5 rounded-full transition-all;
+  width: var(--bar-width);
+  background: var(--bar-color);
+}
+
+.value { @apply text-sm font-bold w-4 text-gray-800; }

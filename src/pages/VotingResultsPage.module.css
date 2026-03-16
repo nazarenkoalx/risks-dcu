@@ -1,0 +1,37 @@
+.page { @apply p-6 max-w-3xl mx-auto; }
+
+.backBtn { @apply flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 mb-4; }
+
+.header     { @apply mb-6; }
+.headerTitle { @apply text-xl font-semibold text-gray-900; }
+.headerSub  { @apply text-sm text-gray-500 mt-1; }
+
+.scoreCard { @apply bg-white rounded-xl p-8 border border-gray-100 shadow-sm text-center mb-5; }
+.scoreLabel { @apply text-xs font-medium text-gray-400 uppercase tracking-widest mb-3; }
+.scoreHint  { @apply text-xs text-gray-400 mt-3; }
+
+.dispersionWrap { @apply mb-5; }
+
+.collegialCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm mb-5; }
+.collegialHeader { @apply flex items-center gap-2 mb-3; }
+.collegialLabel { @apply text-xs font-semibold text-gray-700; }
+.collegialBadge {
+  @apply text-[11px] bg-blue-50 text-brand-royal px-2 py-0.5 rounded-full font-medium;
+}
+.participantChips { @apply flex flex-wrap gap-2; }
+.participantChip  { @apply text-xs bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full; }
+
+.distributionCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-5 mb-5; }
+.distributionTitle { @apply text-sm font-semibold text-gray-700; }
+
+.commentsCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-3 mb-5; }
+.commentsTitle { @apply text-sm font-semibold text-gray-700; }
+.commentItem   { @apply bg-gray-50 rounded-lg p-3; }
+.commentAuthor { @apply text-xs font-medium text-gray-700 mb-1; }
+.commentText   { @apply text-sm text-gray-600; }
+
+.approveBtn {
+  @apply w-full py-3 rounded-xl text-white font-semibold text-base bg-brand-royal;
+}
+.approvedNote { @apply text-center text-sm text-gray-500 py-3; }
+.approvedLink { @apply underline text-brand-royal; }

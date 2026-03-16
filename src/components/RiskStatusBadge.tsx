@@ -1,17 +1,18 @@
 import type { RiskStatus } from '../mock-data/risks'
+import styles from './RiskStatusBadge.module.css'
 
-const STATUS_CONFIG: Record<RiskStatus, { label: string; className: string }> = {
-  draft:               { label: 'Чернетка',          className: 'bg-gray-100 text-gray-600' },
-  voting_in_progress:  { label: 'Голосування',       className: 'bg-yellow-100 text-yellow-700' },
-  assessed:            { label: 'Оцінено',            className: 'bg-blue-100 text-blue-700' },
-  in_treatment:        { label: 'В роботі',           className: 'bg-purple-100 text-purple-700' },
-  monitoring:          { label: 'Моніторинг',         className: 'bg-green-100 text-green-700' },
+const STATUS_CONFIG: Record<RiskStatus, { label: string; cssClass: string }> = {
+  draft:               { label: 'Чернетка',    cssClass: styles.draft },
+  voting_in_progress:  { label: 'Голосування', cssClass: styles.votingInProgress },
+  assessed:            { label: 'Оцінено',     cssClass: styles.assessed },
+  in_treatment:        { label: 'В роботі',    cssClass: styles.inTreatment },
+  monitoring:          { label: 'Моніторинг',  cssClass: styles.monitoring },
 }
 
 export function RiskStatusBadge({ status }: { status: RiskStatus }) {
   const config = STATUS_CONFIG[status]
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${config.className}`}>
+    <span className={`${styles.badge} ${config.cssClass}`}>
       {config.label}
     </span>
   )

@@ -1,0 +1,17 @@
+.container {
+  @apply rounded-lg p-4 flex gap-3 border;
+  background: #FDECEA;
+  border-color: #C8102E;
+}
+
+.icon {
+  @apply w-5 h-5 flex-shrink-0 mt-0.5;
+  color: #C8102E;
+}
+
+.title {
+  @apply font-semibold text-sm;
+  color: #C8102E;
+}
+
+.message { @apply text-sm mt-1 text-gray-700; }

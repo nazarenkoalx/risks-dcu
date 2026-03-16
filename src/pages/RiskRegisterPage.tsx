@@ -6,6 +6,7 @@ import { ScoreBadge } from '../components/ScoreBadge'
 import { RiskStatusBadge } from '../components/RiskStatusBadge'
 import { users } from '../mock-data/users'
 import type { RiskStatus } from '../mock-data/risks'
+import styles from './RiskRegisterPage.module.css'
 
 const CSV_HEADERS = ['Назва', 'Категорія', 'Опис', 'Причини', 'Наслідки']
 const CATEGORIES_LIST = [
@@ -24,7 +25,7 @@ function downloadTemplate() {
     ['Зміна регулювання', 'Комплаєнс / Регуляторний', 'Опис ризику...', 'Причини...', 'Наслідки...'],
   ]
   const csv = rows.map((r) => r.map((cell) => `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n')
-  const bom = '\uFEFF' // UTF-8 BOM for Excel
+  const bom = '\uFEFF'
   const blob = new Blob([bom + csv], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
@@ -158,11 +159,9 @@ export function RiskRegisterPage() {
       setUploadResult({ count, errors })
     }
     reader.readAsText(file, 'UTF-8')
-    // reset so same file can be re-uploaded
     e.target.value = ''
   }
 
-  // Heat map filter from query params
   const liFilter = searchParams.get('likelihood')
   const imFilter = searchParams.get('impact')
 
@@ -179,21 +178,15 @@ export function RiskRegisterPage() {
   const hasActiveFilter = !!(liFilter || status || scoreRange)
 
   return (
-    <div className="p-6 space-y-5">
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <h1 className="text-xl font-semibold text-gray-900">Реєстр ризиків</h1>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={downloadTemplate}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-800 transition-colors"
-          >
+    <div className={styles.page}>
+      <div className={styles.topBar}>
+        <h1 className={styles.title}>Реєстр ризиків</h1>
+        <div className={styles.topRight}>
+          <button onClick={downloadTemplate} className={styles.btnSecondary}>
             <Download className="w-4 h-4" />
             Шаблон CSV
           </button>
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:text-gray-800 transition-colors"
-          >
+          <button onClick={() => fileInputRef.current?.click()} className={styles.btnSecondary}>
             <Upload className="w-4 h-4" />
             Завантажити CSV
           </button>
@@ -202,83 +195,77 @@ export function RiskRegisterPage() {
             type="file"
             accept=".csv"
             onChange={handleFileUpload}
-            className="hidden"
+            className={styles.fileInput}
           />
-          <button
-            onClick={() => navigate('/risks/new')}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-medium bg-brand-royal"
-          >
+          <button onClick={() => navigate('/risks/new')} className={styles.btnPrimary}>
             <Plus className="w-4 h-4" />
             Створити ризик
           </button>
         </div>
       </div>
 
-      {/* Upload result toast */}
       {uploadResult && (
-        <div className={`rounded-xl p-4 flex items-start gap-3 ${uploadResult.count > 0 ? 'bg-green-50 border border-green-100' : 'bg-red-50 border border-red-100'}`}>
+        <div className={uploadResult.count > 0 ? styles.toastSuccess : styles.toastError}>
           {uploadResult.count > 0
-            ? <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-            : <X className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+            ? <CheckCircle className={`${styles.toastIcon} text-green-600`} />
+            : <X className={`${styles.toastIcon} text-red-500`} />
           }
-          <div className="flex-1 text-sm">
+          <div className={styles.toastBody}>
             {uploadResult.count > 0 && (
-              <p className="font-medium text-green-800">Додано {uploadResult.count} ризиків</p>
+              <p className={styles.toastOkMsg}>Додано {uploadResult.count} ризиків</p>
             )}
             {uploadResult.errors.map((e, i) => (
-              <p key={i} className="text-red-700 text-xs mt-0.5">{e}</p>
+              <p key={i} className={styles.toastErrMsg}>{e}</p>
             ))}
           </div>
-          <button onClick={() => setUploadResult(null)} className="text-gray-400 hover:text-gray-600 flex-shrink-0">
+          <button onClick={() => setUploadResult(null)} className={styles.toastClose}>
             <X className="w-4 h-4" />
           </button>
         </div>
       )}
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-3">
+      <div className={styles.filters}>
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white"
+          className={styles.filterSelect}
         >
           {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
         </select>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value as RiskStatus | '')}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white"
+          className={styles.filterSelect}
         >
           {STATUSES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
         <select
           value={scoreRange}
           onChange={(e) => setScoreRange(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white"
+          className={styles.filterSelect}
         >
           {SCORE_RANGES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
         {hasActiveFilter && (
           <button
             onClick={() => { setCategory('Всі категорії'); setStatus(''); setScoreRange(''); navigate('/risks') }}
-            className="text-sm text-blue-600 hover:underline"
+            className={styles.resetLink}
           >
             Скинути фільтри
           </button>
         )}
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <table className="w-full text-sm">
+      <div className={styles.tableWrap}>
+        <table className={styles.table}>
           <thead>
-            <tr className="border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide">
-              <th className="text-left px-5 py-3 font-medium">Назва</th>
-              <th className="text-left px-4 py-3 font-medium hidden md:table-cell">Категорія</th>
-              <th className="text-left px-4 py-3 font-medium">Статус</th>
-              <th className="text-left px-4 py-3 font-medium">Скор</th>
-              <th className="text-left px-4 py-3 font-medium hidden lg:table-cell">Власник</th>
-              <th className="text-left px-4 py-3 font-medium hidden lg:table-cell">Перегляд</th>
+            <tr className={styles.theadRow}>
+              <th className={styles.thLeft}>Назва</th>
+              <th className={styles.thLeftMd}>Категорія</th>
+              <th className={styles.thSm}>Статус</th>
+              <th className={styles.thSm}>Скор</th>
+              <th className={styles.thLeftLg}>Власник</th>
+              <th className={styles.thLeftLg}>Перегляд</th>
             </tr>
           </thead>
           <tbody>
@@ -287,32 +274,28 @@ export function RiskRegisterPage() {
               return (
                 <tr
                   key={risk.id}
-                  className="border-b border-gray-50 last:border-0 hover:bg-gray-50 cursor-pointer transition-colors"
+                  className={styles.tr}
                   onClick={() => navigate(`/risks/${risk.id}`)}
                 >
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-800">{risk.title}</span>
+                  <td className={styles.tdName}>
+                    <div className={styles.tdNameInner}>
+                      <span className={styles.tdNameText}>{risk.title}</span>
                       {risk.dispersionFlag && (
-                        <span title="Розходження думок" className="text-orange-500 text-xs">⚠</span>
+                        <span title="Розходження думок" className={styles.dispersionIcon}>⚠</span>
                       )}
                     </div>
                   </td>
-                  <td className="px-4 py-3.5 text-gray-500 hidden md:table-cell">{risk.category}</td>
-                  <td className="px-4 py-3.5">
-                    <RiskStatusBadge status={risk.status} />
-                  </td>
-                  <td className="px-4 py-3.5">
-                    <ScoreBadge score={risk.score} size="sm" />
-                  </td>
-                  <td className="px-4 py-3.5 text-gray-600 hidden lg:table-cell">{ownerName}</td>
-                  <td className="px-4 py-3.5 text-gray-400 hidden lg:table-cell">{risk.nextReview ?? '—'}</td>
+                  <td className={styles.tdCat}>{risk.category}</td>
+                  <td className={styles.tdCell}><RiskStatusBadge status={risk.status} /></td>
+                  <td className={styles.tdCell}><ScoreBadge score={risk.score} size="sm" /></td>
+                  <td className={styles.tdLg}>{ownerName}</td>
+                  <td className={styles.tdReview}>{risk.nextReview ?? '—'}</td>
                 </tr>
               )
             })}
             {filtered.length === 0 && (
-              <tr>
-                <td colSpan={6} className="px-5 py-8 text-center text-gray-400">
+              <tr className={styles.emptyRow}>
+                <td colSpan={6} className={styles.emptyCell}>
                   Немає ризиків за вибраними фільтрами
                 </td>
               </tr>

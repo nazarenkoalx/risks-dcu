@@ -3,6 +3,7 @@ import { Calendar, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
 import { useRiskStore } from '../store/riskStore'
 import { ScoreBadge } from '../components/ScoreBadge'
 import { RiskStatusBadge } from '../components/RiskStatusBadge'
+import styles from './MonitoringPage.module.css'
 
 const TODAY = new Date('2026-03-10') // current demo date
 
@@ -14,23 +15,23 @@ function daysUntilReview(nextReview: string): number {
 function ReviewBadge({ days }: { days: number }) {
   if (days < 0) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-red-50 text-red-700">
-        <AlertTriangle className="w-3 h-3" />
+      <span className={styles.reviewOverdue}>
+        <AlertTriangle className={styles.reviewIcon} />
         Прострочено на {Math.abs(days)} д.
       </span>
     )
   }
   if (days <= 7) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-orange-50 text-orange-700">
-        <Clock className="w-3 h-3" />
+      <span className={styles.reviewSoon}>
+        <Clock className={styles.reviewIcon} />
         Через {days} д.
       </span>
     )
   }
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700">
-      <Calendar className="w-3 h-3" />
+    <span className={styles.reviewUpcoming}>
+      <Calendar className={styles.reviewIcon} />
       Через {days} д.
     </span>
   )
@@ -40,7 +41,6 @@ export function MonitoringPage() {
   const { risks } = useRiskStore()
   const navigate = useNavigate()
 
-  // Show risks with nextReview within 30 days (including overdue)
   const dueRisks = risks
     .filter((r) => {
       if (!r.nextReview) return false
@@ -57,85 +57,77 @@ export function MonitoringPage() {
   const upcoming = dueRisks.filter((r) => daysUntilReview(r.nextReview!) >= 0)
 
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <h1 className="text-xl font-semibold text-gray-900">Моніторинг</h1>
-        <p className="text-sm text-gray-500 mt-1">
+    <div className={styles.page}>
+      <div className={styles.pageHeader}>
+        <h1 className={styles.title}>Моніторинг</h1>
+        <p className={styles.sub}>
           Ризики, що потребують перегляду протягом 30 днів або вже прострочені
         </p>
       </div>
 
-      {/* Summary chips */}
-      <div className="flex flex-wrap gap-3">
-        <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" />
+      <div className={styles.summaryChips}>
+        <div className={styles.chipOverdue}>
+          <AlertTriangle className={`${styles.chipIcon} text-red-600`} />
           <div>
-            <p className="text-lg font-bold text-red-700">{overdue.length}</p>
-            <p className="text-xs text-red-500">Прострочені</p>
+            <p className={`${styles.chipValue} ${styles.chipValueOverdue}`}>{overdue.length}</p>
+            <p className={`${styles.chipLabel} ${styles.chipLabelOverdue}`}>Прострочені</p>
           </div>
         </div>
-        <div className="bg-yellow-50 border border-yellow-100 rounded-xl px-4 py-3 flex items-center gap-3">
-          <Clock className="w-5 h-5 text-yellow-600 flex-shrink-0" />
+        <div className={styles.chipUpcoming}>
+          <Clock className={`${styles.chipIcon} text-yellow-600`} />
           <div>
-            <p className="text-lg font-bold text-yellow-700">{upcoming.length}</p>
-            <p className="text-xs text-yellow-500">Найближчі 30 днів</p>
+            <p className={`${styles.chipValue} ${styles.chipValueUpcoming}`}>{upcoming.length}</p>
+            <p className={`${styles.chipLabel} ${styles.chipLabelUpcoming}`}>Найближчі 30 днів</p>
           </div>
         </div>
-        <div className="bg-green-50 border border-green-100 rounded-xl px-4 py-3 flex items-center gap-3">
-          <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
+        <div className={styles.chipOk}>
+          <CheckCircle className={`${styles.chipIcon} text-green-600`} />
           <div>
-            <p className="text-lg font-bold text-green-700">
+            <p className={`${styles.chipValue} ${styles.chipValueOk}`}>
               {risks.filter((r) => r.status === 'monitoring' && r.nextReview && daysUntilReview(r.nextReview) > 30).length}
             </p>
-            <p className="text-xs text-green-500">Під контролем</p>
+            <p className={`${styles.chipLabel} ${styles.chipLabelOk}`}>Під контролем</p>
           </div>
         </div>
       </div>
 
       {dueRisks.length === 0 && (
-        <div className="bg-white rounded-xl p-12 border border-gray-100 text-center">
-          <CheckCircle className="w-10 h-10 text-green-400 mx-auto mb-3" />
-          <p className="font-medium text-gray-700">Всі ризики під контролем</p>
-          <p className="text-sm text-gray-400 mt-1">Немає ризиків з датою перегляду в найближчі 30 днів</p>
+        <div className={styles.emptyCard}>
+          <CheckCircle className={styles.emptyIcon} />
+          <p className={styles.emptyTitle}>Всі ризики під контролем</p>
+          <p className={styles.emptySub}>Немає ризиків з датою перегляду в найближчі 30 днів</p>
         </div>
       )}
 
-      {/* Overdue */}
       {overdue.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-red-700 flex items-center gap-2">
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitleOverdue}>
             <AlertTriangle className="w-4 h-4" />
             Прострочені ({overdue.length})
           </h2>
-          <div className="bg-white rounded-xl shadow-sm border border-red-100 overflow-hidden">
-            <table className="w-full text-sm">
+          <div className={styles.tableCardRed}>
+            <table className={styles.table}>
               <thead>
-                <tr className="border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide">
-                  <th className="text-left px-5 py-3 font-medium">Назва</th>
-                  <th className="text-left px-4 py-3 font-medium hidden md:table-cell">Категорія</th>
-                  <th className="text-left px-4 py-3 font-medium">Статус</th>
-                  <th className="text-left px-4 py-3 font-medium">Скор</th>
-                  <th className="text-left px-4 py-3 font-medium">До перегляду</th>
+                <tr className={styles.theadRow}>
+                  <th className={styles.th}>Назва</th>
+                  <th className={styles.thMd}>Категорія</th>
+                  <th className={styles.thSm}>Статус</th>
+                  <th className={styles.thSm}>Скор</th>
+                  <th className={styles.thSm}>До перегляду</th>
                 </tr>
               </thead>
               <tbody>
                 {overdue.map((risk) => (
                   <tr
                     key={risk.id}
-                    className="border-b border-gray-50 last:border-0 hover:bg-red-50/30 cursor-pointer transition-colors"
+                    className={styles.trOverdue}
                     onClick={() => navigate(`/risks/${risk.id}`)}
                   >
-                    <td className="px-5 py-3.5 font-medium text-gray-800">{risk.title}</td>
-                    <td className="px-4 py-3.5 text-gray-500 hidden md:table-cell">{risk.category}</td>
-                    <td className="px-4 py-3.5">
-                      <RiskStatusBadge status={risk.status} />
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <ScoreBadge score={risk.score} size="sm" />
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <ReviewBadge days={daysUntilReview(risk.nextReview!)} />
-                    </td>
+                    <td className={styles.tdName}>{risk.title}</td>
+                    <td className={styles.tdCat}>{risk.category}</td>
+                    <td className={styles.tdCell}><RiskStatusBadge status={risk.status} /></td>
+                    <td className={styles.tdCell}><ScoreBadge score={risk.score} size="sm" /></td>
+                    <td className={styles.tdCell}><ReviewBadge days={daysUntilReview(risk.nextReview!)} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -144,42 +136,35 @@ export function MonitoringPage() {
         </div>
       )}
 
-      {/* Upcoming */}
       {upcoming.length > 0 && (
-        <div className="space-y-3">
-          <h2 className="text-sm font-semibold text-yellow-700 flex items-center gap-2">
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitleUpcoming}>
             <Clock className="w-4 h-4" />
             Найближчі перегляди ({upcoming.length})
           </h2>
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full text-sm">
+          <div className={styles.tableCard}>
+            <table className={styles.table}>
               <thead>
-                <tr className="border-b border-gray-100 text-xs text-gray-500 uppercase tracking-wide">
-                  <th className="text-left px-5 py-3 font-medium">Назва</th>
-                  <th className="text-left px-4 py-3 font-medium hidden md:table-cell">Категорія</th>
-                  <th className="text-left px-4 py-3 font-medium">Статус</th>
-                  <th className="text-left px-4 py-3 font-medium">Скор</th>
-                  <th className="text-left px-4 py-3 font-medium">До перегляду</th>
+                <tr className={styles.theadRow}>
+                  <th className={styles.th}>Назва</th>
+                  <th className={styles.thMd}>Категорія</th>
+                  <th className={styles.thSm}>Статус</th>
+                  <th className={styles.thSm}>Скор</th>
+                  <th className={styles.thSm}>До перегляду</th>
                 </tr>
               </thead>
               <tbody>
                 {upcoming.map((risk) => (
                   <tr
                     key={risk.id}
-                    className="border-b border-gray-50 last:border-0 hover:bg-gray-50 cursor-pointer transition-colors"
+                    className={styles.trUpcoming}
                     onClick={() => navigate(`/risks/${risk.id}`)}
                   >
-                    <td className="px-5 py-3.5 font-medium text-gray-800">{risk.title}</td>
-                    <td className="px-4 py-3.5 text-gray-500 hidden md:table-cell">{risk.category}</td>
-                    <td className="px-4 py-3.5">
-                      <RiskStatusBadge status={risk.status} />
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <ScoreBadge score={risk.score} size="sm" />
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <ReviewBadge days={daysUntilReview(risk.nextReview!)} />
-                    </td>
+                    <td className={styles.tdName}>{risk.title}</td>
+                    <td className={styles.tdCat}>{risk.category}</td>
+                    <td className={styles.tdCell}><RiskStatusBadge status={risk.status} /></td>
+                    <td className={styles.tdCell}><ScoreBadge score={risk.score} size="sm" /></td>
+                    <td className={styles.tdCell}><ReviewBadge days={daysUntilReview(risk.nextReview!)} /></td>
                   </tr>
                 ))}
               </tbody>

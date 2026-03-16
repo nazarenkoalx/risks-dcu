@@ -4,6 +4,7 @@ import { useRiskStore } from '../store/riskStore'
 import { RiskHeatMap } from '../components/RiskHeatMap'
 import { ScoreBadge } from '../components/ScoreBadge'
 import { RiskStatusBadge } from '../components/RiskStatusBadge'
+import styles from './DashboardPage.module.css'
 
 export function DashboardPage() {
   const { risks } = useRiskStore()
@@ -28,28 +29,31 @@ export function DashboardPage() {
   ]
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-xl font-semibold text-gray-900">Дашборд</h1>
+    <div className={styles.page}>
+      <h1 className={styles.title}>Дашборд</h1>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className={styles.kpiGrid}>
         {kpiCards.map(({ label, value, sub, icon: Icon, color }) => (
-          <div key={label} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-            <div className="flex items-start justify-between">
+          <div key={label} className={styles.kpiCard}>
+            <div className={styles.kpiCardInner}>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{value}</p>
-                <p className="text-sm text-gray-500 mt-1">{label}</p>
+                <p className={styles.kpiValue}>{value}</p>
+                <p className={styles.kpiLabel}>{label}</p>
                 {sub && (
-                  <p className="text-xs mt-1 font-medium" style={{ color }}>
+                  <p
+                    className={styles.kpiSub}
+                    style={{ '--kpi-color': color } as React.CSSProperties}
+                  >
                     {sub}
                   </p>
                 )}
               </div>
               <div
-                className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-                style={{ background: `${color}20` }}
+                className={styles.kpiIconWrap}
+                style={{ '--kpi-color': color, '--kpi-icon-bg': `${color}20` } as React.CSSProperties}
               >
-                <Icon className="w-5 h-5" style={{ color }} />
+                <Icon className={styles.kpiIcon} />
               </div>
             </div>
           </div>
@@ -57,26 +61,26 @@ export function DashboardPage() {
       </div>
 
       {/* Heat Map + Top Risks */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Heat Map ризиків</h2>
+      <div className={styles.twoColGrid}>
+        <div className={styles.panel}>
+          <h2 className={styles.panelTitle}>Heat Map ризиків</h2>
           <RiskHeatMap risks={risks} />
-          <p className="text-xs text-gray-400 mt-3">Натисніть на клітинку для фільтрації реєстру</p>
+          <p className={styles.panelHint}>Натисніть на клітинку для фільтрації реєстру</p>
         </div>
 
-        <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
-          <h2 className="text-sm font-semibold text-gray-700 mb-4">Топ-5 ризиків за скором</h2>
-          <div className="space-y-3">
+        <div className={styles.panel}>
+          <h2 className={styles.panelTitle}>Топ-5 ризиків за скором</h2>
+          <div className={styles.riskList}>
             {topRisks.map((risk) => (
               <div
                 key={risk.id}
-                className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 cursor-pointer hover:bg-gray-50 -mx-2 px-2 rounded-lg transition-colors"
+                className={styles.riskRow}
                 onClick={() => navigate(`/risks/${risk.id}`)}
               >
-                <div className="flex-1 min-w-0 mr-3">
-                  <p className="text-sm font-medium text-gray-800 truncate">{risk.title}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-gray-400">{risk.category}</span>
+                <div className={styles.riskInfo}>
+                  <p className={styles.riskName}>{risk.title}</p>
+                  <div className={styles.riskMeta}>
+                    <span className={styles.riskCat}>{risk.category}</span>
                     <RiskStatusBadge status={risk.status} />
                   </div>
                 </div>

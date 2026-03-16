@@ -6,6 +6,7 @@ import { useVotingStore } from '../store/votingStore'
 import { users } from '../mock-data/users'
 import type { VoteParticipant } from '../mock-data/voting-sessions'
 import type { ReviewPeriod } from '../mock-data/risks'
+import styles from './NewRiskPage.module.css'
 
 const CATEGORIES = [
   'Технологічний / Кібер',
@@ -67,94 +68,89 @@ export function NewRiskPage() {
   }
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <button
-        onClick={() => navigate('/risks')}
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 mb-4"
-      >
+    <div className={styles.page}>
+      <button onClick={() => navigate('/risks')} className={styles.backBtn}>
         <ChevronLeft className="w-4 h-4" />
         Реєстр ризиків
       </button>
 
-      <h1 className="text-xl font-semibold text-gray-900 mb-6">Новий ризик</h1>
+      <h1 className={styles.title}>Новий ризик</h1>
 
       {/* Step indicator */}
-      <div className="flex gap-2 mb-8">
+      <div className={styles.steps}>
         {STEP_LABELS.map((label, i) => (
-          <div key={i} className="flex items-center gap-2">
+          <div key={i} className={styles.stepItem}>
             <div
-              className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold"
-              style={{
-                background: i <= step ? '#003DA5' : '#E2E8F0',
-                color: i <= step ? 'white' : '#94A3B8',
-              }}
+              className={`${styles.stepNum} ${i <= step ? styles.stepNumActive : styles.stepNumInactive}`}
             >
               {i + 1}
             </div>
-            <span className={`text-sm ${i === step ? 'font-medium text-gray-800' : 'text-gray-400'}`}>{label}</span>
-            {i < STEP_LABELS.length - 1 && <div className="w-8 h-px bg-gray-200 mx-1" />}
+            <span className={`${styles.stepLabel} ${i === step ? styles.stepLabelActive : styles.stepLabelInactive}`}>
+              {label}
+            </span>
+            {i < STEP_LABELS.length - 1 && <div className={styles.stepDivider} />}
           </div>
         ))}
       </div>
 
       {step === 0 && (
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm space-y-4">
+        <div className={styles.card}>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Назва *</label>
+            <label className={styles.fieldLabel}>Назва *</label>
             <input
               type="text"
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="Коротко опишіть ризик"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={styles.input}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Категорія</label>
+            <label className={styles.fieldLabel}>Категорія</label>
             <select
               value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={styles.select}
             >
               {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Опис</label>
+            <label className={styles.fieldLabel}>Опис</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               placeholder="Що може статися?"
               rows={3}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className={styles.textarea}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Причини виникнення</label>
+            <label className={styles.fieldLabel}>Причини виникнення</label>
             <textarea
               value={form.causes}
               onChange={(e) => setForm({ ...form, causes: e.target.value })}
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className={styles.textarea}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Можливі наслідки</label>
+            <label className={styles.fieldLabel}>Можливі наслідки</label>
             <textarea
               value={form.consequences}
               onChange={(e) => setForm({ ...form, consequences: e.target.value })}
               rows={2}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className={styles.textarea}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Термін перегляду <span className="text-gray-400 font-normal text-xs">(необов'язково)</span>
+            <label className={styles.fieldLabel}>
+              Термін перегляду <span className={styles.optional}>(необов'язково)</span>
             </label>
             <select
               value={form.reviewPeriod}
               onChange={(e) => setForm({ ...form, reviewPeriod: e.target.value as ReviewPeriod | '' })}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={styles.select}
             >
               <option value="">— не встановлено —</option>
               <option value="1m">1 місяць</option>
@@ -166,8 +162,7 @@ export function NewRiskPage() {
           <button
             onClick={() => setStep(1)}
             disabled={!form.title.trim()}
-            className="w-full py-2.5 rounded-lg text-white font-medium text-sm disabled:opacity-50"
-            style={{ background: '#003DA5' }}
+            className={styles.nextBtn}
           >
             Далі
           </button>
@@ -175,58 +170,54 @@ export function NewRiskPage() {
       )}
 
       {step === 1 && (
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm space-y-4">
-          <h2 className="font-semibold text-gray-800">{form.title}</h2>
-          <p className="text-xs text-gray-500 mb-2">Виберіть учасників голосування</p>
+        <div className={styles.card}>
+          <h2 className={styles.step2Title}>{form.title}</h2>
+          <p className={styles.step2Sub}>Виберіть учасників голосування</p>
 
-          <div className="space-y-3">
+          <div className={styles.voterList}>
             {voters.map((user) => {
               const isSelected = selected.includes(user.id)
               const weight = weights[user.id] ?? 1
               const pct = totalWeight > 0 ? Math.round((weight / totalWeight) * 100) : 0
 
               return (
-                <div key={user.id} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200">
+                <div key={user.id} className={styles.voterRow}>
                   <input
                     type="checkbox"
                     checked={isSelected}
                     onChange={(e) => {
                       setSelected(e.target.checked ? [...selected, user.id] : selected.filter((id) => id !== user.id))
                     }}
-                    className="w-4 h-4"
+                    className={styles.voterCheck}
                   />
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800">{user.name}</p>
-                    <p className="text-xs text-gray-500">{user.title}</p>
+                  <div className={styles.voterInfo}>
+                    <p className={styles.voterName}>{user.name}</p>
+                    <p className={styles.voterTitle}>{user.title}</p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className={styles.voterWeight}>
                     <input
                       type="number"
                       min={1} max={5}
                       value={weight}
                       disabled={!isSelected}
                       onChange={(e) => setWeights({ ...weights, [user.id]: Number(e.target.value) })}
-                      className="w-12 text-center border border-gray-200 rounded text-sm p-1 disabled:opacity-40"
+                      className={styles.weightInput}
                     />
-                    {isSelected && <span className="text-xs text-gray-400 w-8">{pct}%</span>}
+                    {isSelected && <span className={styles.weightPct}>{pct}%</span>}
                   </div>
                 </div>
               )
             })}
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              onClick={() => setStep(0)}
-              className="flex-1 py-2.5 rounded-lg text-gray-700 font-medium text-sm border border-gray-200 hover:bg-gray-50"
-            >
+          <div className={styles.formFooter}>
+            <button onClick={() => setStep(0)} className={styles.backStepBtn}>
               Назад
             </button>
             <button
               onClick={handleCreate}
               disabled={selected.length === 0}
-              className="flex-1 py-2.5 rounded-lg text-white font-medium text-sm disabled:opacity-50"
-              style={{ background: '#003DA5' }}
+              className={styles.createBtn}
             >
               Створити та запустити
             </button>

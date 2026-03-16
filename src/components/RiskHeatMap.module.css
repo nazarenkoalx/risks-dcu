@@ -1,0 +1,4 @@
+.container  { @apply overflow-x-auto; }
+.svg        { @apply select-none; }
+.axisLabel  { @apply text-xs; fill: #64748b; }
+.clickable  { @apply cursor-pointer; }

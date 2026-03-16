@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { X, Plus, Trash2 } from 'lucide-react'
 import { useActionPlanStore } from '../store/actionPlanStore'
 import { users } from '../mock-data/users'
+import styles from './ActionPlanFormModal.module.css'
 
 interface Props {
   riskId: string
@@ -42,72 +43,68 @@ export function ActionPlanFormModal({ riskId, onClose, onCreated }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 overflow-y-auto py-8">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4 p-6">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-lg font-semibold text-gray-900">Створити план дій</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+    <div className={styles.overlay}>
+      <div className={styles.dialog}>
+        <div className={styles.header}>
+          <h2 className={styles.title}>Створити план дій</h2>
+          <button onClick={onClose} className={styles.closeBtn}>
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className={styles.body}>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Назва плану</label>
+            <label className={styles.fieldLabel}>Назва плану</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Наприклад: Усунення вразливості API"
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={styles.input}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Опис <span className="text-gray-400 font-normal">(необов'язково)</span>
+            <label className={styles.fieldLabel}>
+              Опис <span className={styles.optional}>(необов'язково)</span>
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={2}
               placeholder="Мета та підхід плану..."
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className={styles.textarea}
             />
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-700">Завдання</label>
-              <button
-                onClick={addTask}
-                className="flex items-center gap-1 text-xs font-medium"
-                style={{ color: '#003DA5' }}
-              >
+            <div className={styles.tasksHeader}>
+              <label className={styles.tasksLabel}>Завдання</label>
+              <button onClick={addTask} className={styles.addTaskBtn}>
                 <Plus className="w-3.5 h-3.5" />
                 Додати
               </button>
             </div>
-            <div className="space-y-2">
+            <div className={styles.taskList}>
               {tasks.map((task, i) => (
-                <div key={i} className="border border-gray-100 rounded-lg p-3 space-y-2">
-                  <div className="flex items-start gap-2">
+                <div key={i} className={styles.taskItem}>
+                  <div className={styles.taskRow}>
                     <input
                       value={task.title}
                       onChange={(e) => updateTask(i, 'title', e.target.value)}
                       placeholder="Назва завдання"
-                      className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className={styles.taskInput}
                     />
                     {tasks.length > 1 && (
-                      <button onClick={() => removeTask(i)} className="text-gray-300 hover:text-red-400 mt-1">
+                      <button onClick={() => removeTask(i)} className={styles.removeBtn}>
                         <Trash2 className="w-4 h-4" />
                       </button>
                     )}
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className={styles.taskGrid}>
                     <select
                       value={task.assignee}
                       onChange={(e) => updateTask(i, 'assignee', e.target.value)}
-                      className="border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white"
+                      className={styles.taskSelect}
                     >
                       <option value="">Відповідальний</option>
                       {users.map((u) => (
@@ -118,7 +115,7 @@ export function ActionPlanFormModal({ riskId, onClose, onCreated }: Props) {
                       type="date"
                       value={task.dueDate}
                       onChange={(e) => updateTask(i, 'dueDate', e.target.value)}
-                      className="border border-gray-200 rounded px-2 py-1.5 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      className={styles.taskDate}
                     />
                   </div>
                 </div>
@@ -127,19 +124,9 @@ export function ActionPlanFormModal({ riskId, onClose, onCreated }: Props) {
           </div>
         </div>
 
-        <div className="flex gap-3 mt-6">
-          <button
-            onClick={onClose}
-            className="flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50"
-          >
-            Скасувати
-          </button>
-          <button
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className="flex-1 py-2.5 rounded-lg text-white font-medium text-sm disabled:opacity-50"
-            style={{ background: '#003DA5' }}
-          >
+        <div className={styles.footer}>
+          <button onClick={onClose} className={styles.cancelBtn}>Скасувати</button>
+          <button onClick={handleSubmit} disabled={!canSubmit} className={styles.saveBtn}>
             Зберегти план
           </button>
         </div>

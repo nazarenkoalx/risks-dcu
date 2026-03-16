@@ -6,6 +6,7 @@ import { useAuthStore } from '../store/authStore'
 import { ScoreBadge } from '../components/ScoreBadge'
 import { DispersionAlert } from '../components/DispersionAlert'
 import { VotingDistribution } from '../components/VotingDistribution'
+import styles from './VotingResultsPage.module.css'
 
 export function VotingResultsPage() {
   const { id } = useParams<{ id: string }>()
@@ -28,49 +29,40 @@ export function VotingResultsPage() {
   }
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <button
-        onClick={() => navigate(`/risks/${risk.id}`)}
-        className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 mb-4"
-      >
+    <div className={styles.page}>
+      <button onClick={() => navigate(`/risks/${risk.id}`)} className={styles.backBtn}>
         <ChevronLeft className="w-4 h-4" />
         До картки ризику
       </button>
 
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-900">Результати голосування</h1>
-        <p className="text-sm text-gray-500 mt-1">{risk.title}</p>
+      <div className={styles.header}>
+        <h1 className={styles.headerTitle}>Результати голосування</h1>
+        <p className={styles.headerSub}>{risk.title}</p>
       </div>
 
-      {/* Consensus Score — large, front and center */}
-      <div className="bg-white rounded-xl p-8 border border-gray-100 shadow-sm text-center mb-5">
-        <p className="text-xs font-medium text-gray-400 uppercase tracking-widest mb-3">Консенсус-скор</p>
+      <div className={styles.scoreCard}>
+        <p className={styles.scoreLabel}>Консенсус-скор</p>
         <ScoreBadge score={session.consensusScore ?? null} size="lg" />
-        <p className="text-xs text-gray-400 mt-3">
+        <p className={styles.scoreHint}>
           Ймовірність {session.consensusLikelihood} × Вплив {session.consensusImpact} = {session.consensusScore}
         </p>
       </div>
 
-      {/* Dispersion Alert — "aha moment" */}
       {session.dispersionFlag && session.dispersionMessage && (
-        <div className="mb-5">
+        <div className={styles.dispersionWrap}>
           <DispersionAlert message={session.dispersionMessage} />
         </div>
       )}
 
-      {/* Collegial: participants list instead of vote distribution */}
       {session.mode === 'collegial' ? (
-        <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm mb-5">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs font-semibold text-gray-700">Учасники наради</span>
-            <span className="text-[11px] bg-blue-50 text-brand-royal px-2 py-0.5 rounded-full font-medium">
-              Колегіальне рішення
-            </span>
+        <div className={styles.collegialCard}>
+          <div className={styles.collegialHeader}>
+            <span className={styles.collegialLabel}>Учасники наради</span>
+            <span className={styles.collegialBadge}>Колегіальне рішення</span>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className={styles.participantChips}>
             {session.participants.map((p) => (
-              <span key={p.userId} className="text-xs bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full">
+              <span key={p.userId} className={styles.participantChip}>
                 {p.name}
               </span>
             ))}
@@ -78,9 +70,8 @@ export function VotingResultsPage() {
         </div>
       ) : (
         <>
-          {/* Distribution Charts */}
-          <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-5 mb-5">
-            <h3 className="text-sm font-semibold text-gray-700">Розподіл голосів</h3>
+          <div className={styles.distributionCard}>
+            <h3 className={styles.distributionTitle}>Розподіл голосів</h3>
             <VotingDistribution
               votes={session.votes}
               participants={session.participants}
@@ -97,16 +88,15 @@ export function VotingResultsPage() {
             />
           </div>
 
-          {/* Comments */}
           {session.votes.some((v) => v.rationale) && (
-            <div className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-3 mb-5">
-              <h3 className="text-sm font-semibold text-gray-700">Коментарі учасників</h3>
+            <div className={styles.commentsCard}>
+              <h3 className={styles.commentsTitle}>Коментарі учасників</h3>
               {session.votes.filter((v) => v.rationale).map((v) => {
                 const p = session.participants.find((p) => p.userId === v.userId)
                 return (
-                  <div key={v.userId} className="bg-gray-50 rounded-lg p-3">
-                    <p className="text-xs font-medium text-gray-700 mb-1">{p?.name}</p>
-                    <p className="text-sm text-gray-600">{v.rationale}</p>
+                  <div key={v.userId} className={styles.commentItem}>
+                    <p className={styles.commentAuthor}>{p?.name}</p>
+                    <p className={styles.commentText}>{v.rationale}</p>
                   </div>
                 )
               })}
@@ -115,24 +105,18 @@ export function VotingResultsPage() {
         </>
       )}
 
-      {/* Approve button */}
       {risk.status === 'assessed' && currentUser.role === 'coordinator' && (
-        <button
-          onClick={handleApprove}
-          className="w-full py-3 rounded-xl text-white font-semibold text-base"
-          style={{ background: '#003DA5' }}
-        >
+        <button onClick={handleApprove} className={styles.approveBtn}>
           Затвердити скор → Перейти до плану дій
         </button>
       )}
 
       {(risk.status === 'in_treatment' || risk.status === 'monitoring') && (
-        <div className="text-center text-sm text-gray-500 py-3">
+        <div className={styles.approvedNote}>
           Скор затверджено.{' '}
           <button
             onClick={() => navigate(`/risks/${risk.id}?tab=action_plan`)}
-            className="underline"
-            style={{ color: '#003DA5' }}
+            className={styles.approvedLink}
           >
             Перейти до плану дій
           </button>

@@ -1,5 +1,6 @@
 import type { Vote, VoteParticipant } from '../mock-data/voting-sessions'
 import { users } from '../mock-data/users'
+import styles from './VotingDistribution.module.css'
 
 interface VotingDistributionProps {
   votes: Vote[]
@@ -9,12 +10,18 @@ interface VotingDistributionProps {
   weightedAvg: number
 }
 
+function getBarColor(value: number): string {
+  if (value >= 4) return '#C8102E'
+  if (value >= 3) return '#FFA726'
+  return '#9ACEEB'
+}
+
 export function VotingDistribution({ votes, participants, field, label, weightedAvg }: VotingDistributionProps) {
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700">{label}</span>
-        <span className="text-xs text-gray-500">Зважене середнє: <strong>{weightedAvg}</strong></span>
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <span className={styles.label}>{label}</span>
+        <span className={styles.avg}>Зважене середнє: <strong>{weightedAvg}</strong></span>
       </div>
       {votes.map((vote) => {
         const participant = participants.find((p) => p.userId === vote.userId)
@@ -23,21 +30,16 @@ export function VotingDistribution({ votes, participants, field, label, weighted
         const barWidth = (value / 5) * 100
 
         return (
-          <div key={vote.userId} className="flex items-center gap-3">
-            <span className="text-xs text-gray-600 w-28 truncate">{user?.name ?? vote.userId}</span>
-            <span className="text-xs text-gray-400 w-8 text-center">
-              w={participant?.weight}
-            </span>
-            <div className="flex-1 bg-gray-100 rounded-full h-5 relative">
+          <div key={vote.userId} className={styles.row}>
+            <span className={styles.userName}>{user?.name ?? vote.userId}</span>
+            <span className={styles.weight}>w={participant?.weight}</span>
+            <div className={styles.barTrack}>
               <div
-                className="h-5 rounded-full transition-all"
-                style={{
-                  width: `${barWidth}%`,
-                  background: value >= 4 ? '#C8102E' : value >= 3 ? '#FFA726' : '#9ACEEB',
-                }}
+                className={styles.barFill}
+                style={{ '--bar-width': `${barWidth}%`, '--bar-color': getBarColor(value) } as React.CSSProperties}
               />
             </div>
-            <span className="text-sm font-bold w-4 text-gray-800">{value}</span>
+            <span className={styles.value}>{value}</span>
           </div>
         )
       })}

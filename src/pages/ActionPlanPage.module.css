@@ -1,0 +1,33 @@
+.page  { @apply p-6 max-w-3xl mx-auto; }
+.title { @apply text-xl font-semibold text-gray-900 mb-1; }
+.sub   { @apply text-sm text-gray-500 mb-6; }
+
+.emptyCard   { @apply bg-white rounded-xl p-8 border border-gray-100 shadow-sm text-center; }
+.emptyIcon   { @apply w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4 bg-sky-50; }
+.emptyTitle  { @apply font-medium text-gray-700 mb-1; }
+.emptySub    { @apply text-sm text-gray-400; }
+
+.pendingSection { @apply mb-6; }
+.pendingHeader  { @apply flex items-center gap-2 mb-3; }
+.pendingDot     { @apply w-2 h-2 rounded-full flex-shrink-0 bg-brand-red; }
+.pendingTitle   { @apply text-sm font-semibold text-gray-700; }
+.pendingList    { @apply space-y-3; }
+
+.otherSection { }
+.otherTitle   { @apply text-sm font-semibold text-gray-700 mb-3; }
+.otherList    { @apply space-y-3; }
+
+/* PlanCard */
+.planCard {
+  @apply w-full text-left bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:border-gray-300 transition-colors;
+}
+.planCardTop    { @apply flex items-start justify-between gap-3 mb-3; }
+.planCardInfo   { @apply flex-1 min-w-0; }
+.planCardTitle  { @apply font-medium text-gray-800 truncate; }
+.planCardRisk   { @apply text-xs text-gray-400 mt-0.5 truncate; }
+.planStatusBadge {
+  @apply flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium flex-shrink-0;
+  background: var(--plan-status-bg);
+  color: var(--plan-status-color);
+}
+.planCardMeta   { @apply flex items-center gap-4 text-xs text-gray-400; }

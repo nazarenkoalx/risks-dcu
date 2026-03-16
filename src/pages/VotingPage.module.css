@@ -1,0 +1,43 @@
+.page     { @apply max-w-lg mx-auto px-4 py-8; }
+.title    { @apply text-lg font-semibold text-gray-800 mb-1; }
+.desc     { @apply text-sm text-gray-500 mb-8; }
+.form     { @apply space-y-8; }
+
+/* Already voted */
+.votedWrap  { @apply min-h-[60vh] flex flex-col items-center justify-center p-8 text-center; }
+.votedIcon  { @apply w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-sky-50; }
+.votedEmoji { @apply text-3xl; }
+.votedTitle { @apply text-lg font-semibold text-gray-800 mb-2; }
+.votedSub   { @apply text-sm text-gray-500; }
+.votedRedirect { @apply text-xs text-gray-400 mt-2; }
+
+/* ScoreSelector */
+.selectorWrap { @apply space-y-3; }
+.selectorHeader { @apply flex items-center justify-between; }
+.selectorLabel { @apply text-sm font-medium text-gray-700; }
+.selectorPills { @apply flex gap-2; }
+.selectorFooter { @apply flex justify-between text-xs text-gray-400; }
+
+.scoreLabel {
+  @apply text-xs font-semibold px-2 py-0.5 rounded-full text-white;
+  background: var(--score-bg);
+}
+
+.scoreBtn { @apply flex-1 h-12 rounded-lg text-lg font-bold border-2 transition-all; }
+.scoreBtnInactive { background: white; color: #64748b; border-color: #E2E8F0; }
+.scoreBtnActive1  { background: #16A34A; color: white; border-color: #16A34A; }
+.scoreBtnActive2  { background: #65A30D; color: white; border-color: #65A30D; }
+.scoreBtnActive3  { background: #003DA5; color: white; border-color: #003DA5; }
+.scoreBtnActive4  { background: #EA580C; color: white; border-color: #EA580C; }
+.scoreBtnActive5  { background: #C8102E; color: white; border-color: #C8102E; }
+
+/* Comment */
+.commentLabel { @apply block text-sm font-medium text-gray-700 mb-2; }
+.commentOpt   { @apply text-gray-400 font-normal; }
+.commentArea  {
+  @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none;
+}
+
+.submitBtn {
+  @apply w-full py-3 rounded-xl text-white font-semibold text-base disabled:opacity-40 transition-opacity bg-brand-royal;
+}

@@ -1,0 +1,19 @@
+.overlay  { @apply fixed inset-0 bg-black/40 flex items-center justify-center z-50; }
+.dialog   { @apply bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 p-6; }
+
+.header   { @apply flex items-center justify-between mb-5; }
+.title    { @apply text-lg font-semibold text-gray-900; }
+.closeBtn { @apply text-gray-400 hover:text-gray-600; }
+
+.description { @apply text-sm text-gray-500 mb-4; }
+
+.userList { @apply space-y-2 mb-6; }
+.userRow  { @apply flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50; }
+.checkbox { @apply w-4 h-4 rounded; }
+.userInfo { @apply flex-1; }
+.userName { @apply text-sm font-medium text-gray-800; }
+.userRole { @apply text-xs text-gray-500; }
+
+.submitBtn {
+  @apply w-full py-2.5 rounded-lg text-white font-medium text-sm disabled:opacity-50 bg-brand-royal;
+}

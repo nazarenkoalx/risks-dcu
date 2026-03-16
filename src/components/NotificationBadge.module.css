@@ -1,0 +1,3 @@
+.badge {
+  @apply absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white animate-pulse bg-brand-red;
+}

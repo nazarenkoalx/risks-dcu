@@ -1,0 +1,214 @@
+.page    { @apply p-6 max-w-3xl mx-auto; }
+.backBtn { @apply flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800 mb-4; }
+
+/* Header */
+.header      { @apply flex items-start justify-between mb-6; }
+.headerInfo  {}
+.pageTitle   { @apply text-xl font-semibold text-gray-900; }
+.pageCat     { @apply text-sm text-gray-500 mt-1; }
+.headerRight { @apply flex items-center gap-3 flex-shrink-0 ml-4; }
+
+/* Tabs */
+.tabBar { @apply flex gap-1 border-b border-gray-200 mb-6; }
+.tab    {
+  @apply px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors;
+}
+.tabActive   { @apply border-blue-600 text-blue-600; }
+.tabInactive { @apply border-transparent text-gray-500 hover:text-gray-700; }
+.tabBadge    {
+  @apply ml-1.5 inline-flex items-center justify-center w-4 h-4 rounded-full text-white text-[10px] font-bold bg-brand-red;
+}
+
+/* Cards */
+.card      { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.cardTitle { @apply text-sm font-semibold text-gray-700 mb-2; }
+
+/* ── Overview ── */
+.overviewTab { @apply space-y-5; }
+
+.descCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.descTitle { @apply text-sm font-semibold text-gray-700 mb-2; }
+.descText  { @apply text-sm text-gray-600 leading-relaxed; }
+.descSection { @apply mt-3; }
+.descSectionLabel { @apply text-xs text-gray-400 mb-1; }
+.descSectionText  { @apply text-sm text-gray-600; }
+.descMeta  { @apply grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-gray-50; }
+.descMetaItem {}
+.descMetaLabel { @apply text-xs text-gray-400; }
+.descMetaValue { @apply text-sm text-gray-700; }
+.nextReviewRow { @apply col-span-2 flex items-center gap-2 pt-1; }
+.nextReviewIcon { @apply w-3.5 h-3.5 text-gray-400 flex-shrink-0; }
+.nextReviewLabel { @apply text-xs text-gray-400; }
+.nextReviewValue { @apply text-sm font-medium text-gray-700; }
+
+/* Voting section */
+.votingCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.votingTitle { @apply text-sm font-semibold text-gray-700 mb-4; }
+
+.btnPrimary { @apply px-4 py-2 rounded-lg text-white text-sm font-medium bg-brand-royal; }
+.reVoteRow  { @apply flex justify-end pt-1; }
+.reVoteBtn  {
+  @apply flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors border border-gray-200 rounded-lg px-3 py-1.5 hover:border-gray-300;
+}
+
+.votingProgress { @apply space-y-4; }
+.progressHeader { @apply flex items-center justify-between mb-1; }
+.progressText   { @apply text-sm text-gray-600; }
+.progressTrack  { @apply w-full bg-gray-100 rounded-full h-2; }
+.progressFill   { @apply h-2 rounded-full transition-all bg-brand-sky; width: var(--progress-width); }
+
+.participantList { @apply space-y-2; }
+.participantRow  { @apply flex items-center gap-3 text-sm; }
+.participantCheck { }
+.participantVoted   { @apply text-green-500; }
+.participantPending { @apply text-gray-400; }
+.participantName    { @apply text-gray-700; }
+.participantWaiting { @apply text-gray-400 text-xs; }
+
+.closeSessionBtn { @apply px-4 py-2 rounded-lg text-white text-sm font-medium mt-2 bg-brand-royal; }
+
+/* Assessed state */
+.assessedContent  { @apply space-y-4; }
+.scoreSummary     { @apply flex items-center gap-6; }
+.scoreSummaryItem {}
+.scoreSummaryLabel { @apply text-xs text-gray-500 mb-1; }
+.velocityValue    { @apply text-lg font-semibold text-gray-800; }
+
+.expandBtn { @apply flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition-colors; }
+.expandIcon { @apply w-3.5 h-3.5; }
+.breakdownContent { @apply space-y-4 pt-1; }
+.rationales       { @apply space-y-2 pt-2 border-t border-gray-100; }
+.rationalesLabel  { @apply text-xs font-medium text-gray-500; }
+.rationaleItem    { @apply bg-gray-50 rounded-lg p-3; }
+.rationaleAuthor  { @apply text-xs font-medium text-gray-700 mb-1; }
+.rationaleText    { @apply text-sm text-gray-600; }
+
+.approveScoreBtn  { @apply px-4 py-2 rounded-lg text-white text-sm font-medium bg-brand-royal; }
+
+/* Voting History */
+.historyCard   { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.historyToggle { @apply flex items-center justify-between w-full; }
+.historyHeader { @apply flex items-center gap-2 text-sm font-semibold text-gray-700; }
+.historyIcon   { @apply w-4 h-4 text-gray-400; }
+.historyCount  { @apply ml-1 text-xs font-normal text-gray-400 bg-gray-100 rounded-full px-2 py-0.5; }
+.historyChevron { @apply w-4 h-4 text-gray-400; }
+.historyContent { @apply mt-4 space-y-3; }
+.historyItem    { @apply rounded-lg border border-gray-100 p-3; }
+.historyItemTop { @apply flex items-center justify-between mb-2; }
+.historyNum     { @apply text-xs font-medium text-gray-500; }
+.historyRight   { @apply flex items-center gap-2; }
+.historyCompleted { @apply text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full; }
+.historyActive   { @apply text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full; }
+.historyDate     { @apply text-xs text-gray-400; }
+.historyBody     { @apply flex items-center gap-4 text-sm; }
+.historyParticipants { @apply text-gray-500 text-xs; }
+.historyScoreWrap { @apply flex items-center gap-2 ml-auto; }
+.historyScoreInfo { @apply text-xs text-gray-400; }
+.historyScorePill { @apply text-xs font-bold px-2 py-0.5 rounded-full; }
+.historyScorePillCritical { background: #FEE2E2; color: #991B1B; }
+.historyScorePillHigh     { background: #FEF3C7; color: #92400E; }
+.historyScorePillLow      { background: #F0FDF4; color: #166534; }
+
+/* ── Scenarios ── */
+.scenariosTab { @apply space-y-4; }
+.scenarioEmpty { @apply bg-white rounded-xl p-8 border border-gray-100 text-center text-gray-400; }
+.scenarioCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.scenarioTitle { @apply font-semibold text-gray-800; }
+.scenarioDesc  { @apply text-sm text-gray-500 mt-1 mb-4; }
+.taskList      { @apply space-y-2; }
+.taskRow       { @apply flex items-center gap-3 text-sm; }
+.taskBulletDone   { @apply text-green-500; }
+.taskBulletProgress { @apply text-yellow-500; }
+.taskBulletTodo   { @apply text-gray-300; }
+.taskTitle     { @apply text-gray-700 flex-1; }
+.taskAssignee  { @apply text-xs text-gray-400; }
+.taskDue       { @apply text-xs text-gray-400; }
+
+/* ── Action Plan tab ── */
+.actionPlanTab { @apply space-y-4; }
+
+.emptyPlanCard { @apply bg-white rounded-xl p-8 border border-gray-100 shadow-sm text-center; }
+.emptyPlanIcon { @apply w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-4 bg-sky-50; }
+.emptyPlanIconImg { @apply w-6 h-6 text-brand-royal; }
+.emptyPlanTitle { @apply font-medium text-gray-700 mb-1; }
+.emptyPlanSub   { @apply text-sm text-gray-400 mb-4; }
+.createPlanBtn  { @apply px-5 py-2.5 rounded-lg text-white text-sm font-medium bg-brand-royal; }
+
+.planCard        { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.planCardHeader  { @apply flex items-start justify-between mb-3; }
+.planCardInfo    {}
+.planCardTitle   { @apply font-semibold text-gray-800; }
+.planCardDesc    { @apply text-sm text-gray-500 mt-1; }
+.planStatusDraft { @apply text-xs bg-gray-100 text-gray-500 px-2 py-1 rounded-full; }
+.planStatusPending { @apply text-xs px-2 py-1 rounded-full font-medium bg-orange-50 text-orange-700; }
+.planCardTasks   { @apply mt-4 pt-4 border-t border-gray-100; }
+.planCardTasksLabel { @apply text-xs font-medium text-gray-500 mb-2; }
+
+.sendApprovalBtn { @apply px-4 py-2.5 rounded-lg text-white text-sm font-medium bg-brand-royal; }
+
+/* Approval progress */
+.approvalCard  { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm; }
+.approvalTitle { @apply text-sm font-semibold text-gray-700 mb-3; }
+.approvalTrack { @apply w-full bg-gray-100 rounded-full h-1.5 mb-4; }
+.approvalFill  { @apply h-1.5 rounded-full transition-all bg-brand-sky; width: var(--approval-width); }
+.approvalList  { @apply space-y-2; }
+.approvalRow   { @apply flex items-start gap-3; }
+.approvalIcon  { @apply mt-0.5 flex-shrink-0; }
+.approvalInfo  { @apply flex-1; }
+.approvalName  { @apply text-sm text-gray-700; }
+.approvalComment { @apply text-xs text-gray-500 mt-0.5; }
+.approvalDate  { @apply text-xs text-gray-400 flex-shrink-0; }
+
+/* Voter response */
+.alreadyRespondedCard { @apply bg-blue-50 rounded-xl p-4 flex items-center gap-3; }
+.alreadyRespondedIcon { @apply w-5 h-5 flex-shrink-0; }
+.alreadyRespondedText { @apply text-sm font-medium text-gray-700; }
+.alreadyRespondedComment { @apply text-xs text-gray-500 mt-0.5; }
+
+.sessionDoneCard { @apply bg-green-50 rounded-xl p-4 text-center; }
+.sessionDoneText { @apply text-sm font-medium text-green-700; }
+
+.decisionCard   { @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm space-y-4; }
+.decisionTitle  { @apply text-sm font-semibold text-gray-700; }
+.commentLabel   { @apply block text-sm text-gray-600 mb-1; }
+.commentOpt     { @apply text-gray-400; }
+.commentArea    {
+  @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none;
+}
+.decisionBtns   { @apply flex gap-3; }
+.rejectBtn      {
+  @apply flex-1 py-2.5 rounded-lg text-sm font-medium border-2 border-red-200 text-red-600 hover:bg-red-50 flex items-center justify-center gap-2;
+}
+.approveBtn     {
+  @apply flex-1 py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-2 bg-brand-royal;
+}
+
+.notApproverCard { @apply bg-gray-50 rounded-xl p-4 text-center text-sm text-gray-400; }
+
+/* Approved plan */
+.approvedBanner { @apply bg-green-50 rounded-xl p-4 flex items-center gap-3; }
+.approvedIcon   { @apply w-5 h-5 text-green-600 flex-shrink-0; }
+.approvedTitle  { @apply text-sm font-medium text-green-800; }
+.approvedDate   { @apply text-xs text-green-600; }
+.approvalItemRow { @apply flex items-center gap-2 text-xs text-gray-500; }
+.approvalItemIcon { @apply w-3.5 h-3.5 text-green-500 flex-shrink-0; }
+.approvalItemComment { @apply text-gray-400; }
+.approvalItemDate { @apply ml-auto text-gray-400; }
+
+/* Rejected plan */
+.rejectedBanner { @apply bg-red-50 rounded-xl p-4; }
+.rejectedTitle  { @apply text-sm font-medium text-red-800 mb-2; }
+.rejectedRow    { @apply flex items-start gap-2 text-xs text-red-600 mt-1; }
+.rejectedIcon   { @apply w-3.5 h-3.5 flex-shrink-0 mt-0.5; }
+
+/* PlanTaskList */
+.planTaskList { @apply space-y-2; }
+.planTaskRow  { @apply flex items-start gap-3 text-sm py-1; }
+.planTaskBullet {}
+.planTaskTitle  { @apply flex-1 text-gray-700; }
+.planTaskAssignee { @apply text-xs text-gray-400 flex-shrink-0; }
+.planTaskDue    { @apply text-xs text-gray-400 flex-shrink-0; }
+.planTaskStatus { @apply text-xs flex-shrink-0; }
+.taskDone       { @apply text-green-500; }
+.taskProgress   { @apply text-yellow-500; }
+.taskTodo       { @apply text-gray-300; }
