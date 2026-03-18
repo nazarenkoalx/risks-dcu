@@ -104,6 +104,7 @@ export function RiskRegisterPage() {
   const [category, setCategory] = useState('Всі категорії')
   const [status, setStatus] = useState<RiskStatus | ''>('')
   const [scoreRange, setScoreRange] = useState('')
+  const [owner, setOwner] = useState('')
   const [uploadResult, setUploadResult] = useState<{ count: number; errors: string[] } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -169,13 +170,14 @@ export function RiskRegisterPage() {
     if (category !== 'Всі категорії' && r.category !== category) return false
     if (status && r.status !== status) return false
     if (!scoreInRange(r.score, scoreRange)) return false
+    if (owner && r.owner !== owner) return false
     if (liFilter && imFilter) {
       return r.likelihood === Number(liFilter) && r.impact === Number(imFilter)
     }
     return true
   })
 
-  const hasActiveFilter = !!(liFilter || status || scoreRange)
+  const hasActiveFilter = !!(liFilter || status || scoreRange || owner)
 
   return (
     <div className={styles.page}>
@@ -246,9 +248,17 @@ export function RiskRegisterPage() {
         >
           {SCORE_RANGES.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
         </select>
+        <select
+          value={owner}
+          onChange={(e) => setOwner(e.target.value)}
+          className={styles.filterSelect}
+        >
+          <option value="">Всі власники</option>
+          {users.map((u) => <option key={u.id} value={u.id}>{u.name}</option>)}
+        </select>
         {hasActiveFilter && (
           <button
-            onClick={() => { setCategory('Всі категорії'); setStatus(''); setScoreRange(''); navigate('/risks') }}
+            onClick={() => { setCategory('Всі категорії'); setStatus(''); setScoreRange(''); setOwner(''); navigate('/risks') }}
             className={styles.resetLink}
           >
             Скинути фільтри
