@@ -32,8 +32,10 @@
 .scoreBtnActive5  { background: #C8102E; color: white; border-color: #C8102E; }
 
 /* Comment */
-.commentLabel { @apply block text-sm font-medium text-gray-700 mb-2; }
-.commentOpt   { @apply text-gray-400 font-normal; }
+.commentLabel    { @apply block text-sm font-medium text-gray-700 mb-2; }
+.commentOpt      { @apply text-gray-400 font-normal; }
+.commentRequired { @apply text-red-500 font-normal; }
+.commentHint     { @apply mt-1 text-xs text-red-500; }
 .commentArea  {
   @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none;
 }

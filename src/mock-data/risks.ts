@@ -12,7 +12,7 @@ export interface Risk {
   description: string
   causes?: string
   consequences?: string
-  owner: string
+  owner?: string
   createdAt: string
   reviewPeriod?: ReviewPeriod
   nextReview?: string

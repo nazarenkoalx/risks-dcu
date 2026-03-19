@@ -1,0 +1,35 @@
+.overlay {
+  @apply fixed inset-0 bg-black/40 flex items-center justify-center z-50 overflow-y-auto py-8;
+}
+.dialog {
+  @apply bg-white rounded-xl shadow-2xl w-full max-w-lg mx-4;
+}
+
+.header {
+  @apply flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-100;
+}
+.title   { @apply text-lg font-semibold text-gray-900; }
+.closeBtn { @apply text-gray-400 hover:text-gray-600; }
+
+.body { @apply space-y-4 px-6 py-5 max-h-[60vh] overflow-y-auto; }
+
+.fieldLabel { @apply block text-sm font-medium text-gray-700 mb-1; }
+.optional   { @apply text-gray-400 font-normal text-xs; }
+
+.input {
+  @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+.select {
+  @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+.textarea {
+  @apply w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none;
+}
+
+.footer    { @apply flex gap-3 px-6 py-4 border-t border-gray-100; }
+.cancelBtn {
+  @apply flex-1 py-2.5 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50;
+}
+.saveBtn {
+  @apply flex-1 py-2.5 rounded-lg text-white font-medium text-sm disabled:opacity-50 bg-brand-royal;
+}

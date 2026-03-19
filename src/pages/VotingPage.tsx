@@ -123,7 +123,8 @@ export function VotingPage() {
     return <div className="p-8 text-center text-gray-400">Ви не є учасником цього голосування</div>
   }
 
-  const canSubmit = likelihood > 0 && impact > 0 && velocity > 0
+  const isRevote = session.votingType === 'revote'
+  const canSubmit = likelihood > 0 && impact > 0 && velocity > 0 && (!isRevote || rationale.trim().length > 0)
 
   return (
     <div className={styles.page}>
@@ -155,15 +156,22 @@ export function VotingPage() {
 
         <div>
           <label className={styles.commentLabel}>
-            Ваш коментар <span className={styles.commentOpt}>(необов'язково)</span>
+            {isRevote ? (
+              <>Обгрунтуйте вашу оцінку <span className={styles.commentRequired}>*</span></>
+            ) : (
+              <>Ваш коментар <span className={styles.commentOpt}>(необов'язково)</span></>
+            )}
           </label>
           <textarea
             value={rationale}
             onChange={(e) => setRationale(e.target.value)}
             rows={3}
-            placeholder="Поясніть свою оцінку..."
+            placeholder={isRevote ? 'Обов\'язково поясніть причину повторного голосування...' : 'Поясніть свою оцінку...'}
             className={styles.commentArea}
           />
+          {isRevote && rationale.trim().length === 0 && (
+            <p className={styles.commentHint}>Поле обов'язкове для повторного голосування</p>
+          )}
         </div>
 
         <button

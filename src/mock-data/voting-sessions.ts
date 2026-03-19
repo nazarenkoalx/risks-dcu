@@ -19,11 +19,14 @@ export type ReviewPeriod = '1m' | '3m' | '6m' | '1y'
 
 export type VotingMode = 'individual' | 'collegial'
 
+export type VotingType = 'initial' | 'revote'
+
 export interface VotingSession {
   id: string
   riskId: string
   status: SessionStatus
   mode?: VotingMode
+  votingType: VotingType
   participants: VoteParticipant[]
   votes: Vote[]
   consensusLikelihood?: number
@@ -42,6 +45,7 @@ export const completedSession: VotingSession = {
   id: 'vs1',
   riskId: 'r1',
   status: 'completed',
+  votingType: 'initial',
   participants: [
     { userId: 'u2', weight: 3, name: 'Марина Ковальова', voted: true },
     { userId: 'u3', weight: 2, name: 'Дмитро Орлов', voted: true },
@@ -78,6 +82,7 @@ export const activeSession: VotingSession = {
   id: 'vs2',
   riskId: 'r2',
   status: 'open',
+  votingType: 'initial',
   participants: [
     { userId: 'u2', weight: 3, name: 'Марина Ковальова', voted: false },
     { userId: 'u3', weight: 2, name: 'Дмитро Орлов', voted: false },

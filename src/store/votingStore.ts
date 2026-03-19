@@ -5,6 +5,7 @@ import {
   type Vote,
   type VoteParticipant,
   type VotingMode,
+  type VotingType,
   type ReviewPeriod,
 } from '../mock-data/voting-sessions'
 
@@ -44,11 +45,14 @@ export const useVotingStore = create<VotingState>((set, get) => ({
     ).length,
 
   startSession: (riskId, participants, mode = 'collegial', reviewPeriod) => {
+    const hasExisting = get().sessions.some((s) => s.riskId === riskId)
+    const votingType: VotingType = hasExisting ? 'revote' : 'initial'
     const newSession: VotingSession = {
       id: `vs${Date.now()}`,
       riskId,
       status: 'open',
       mode,
+      votingType,
       participants,
       votes: [],
       reviewPeriod,

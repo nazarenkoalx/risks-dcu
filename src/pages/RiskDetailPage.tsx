@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom'
-import { ChevronLeft, ChevronDown, ChevronUp, ClipboardList, CheckCircle, XCircle, Clock, Calendar, History, RefreshCw } from 'lucide-react'
+import { ChevronLeft, ChevronDown, ChevronUp, ClipboardList, CheckCircle, XCircle, Clock, Calendar, History, RefreshCw, Pencil } from 'lucide-react'
 import { useRiskStore } from '../store/riskStore'
 import { useVotingStore } from '../store/votingStore'
 import { useAuthStore } from '../store/authStore'
@@ -13,6 +13,7 @@ import { VotingSetupModal } from '../components/VotingSetupModal'
 import type { StartVotingParams } from '../components/VotingSetupModal'
 import { ActionPlanFormModal } from '../components/ActionPlanFormModal'
 import { ActionPlanApproversModal } from '../components/ActionPlanApproversModal'
+import { EditRiskModal } from '../components/EditRiskModal'
 import { scenarios } from '../mock-data/scenarios'
 import { users } from '../mock-data/users'
 import type { ReviewPeriod } from '../mock-data/risks'
@@ -67,6 +68,9 @@ export function RiskDetailPage() {
   const { getSessionByRiskId, getAllSessionsByRiskId, startSession, closeSession } = useVotingStore()
   const { currentUser } = useAuthStore()
   const { getPlanByRiskId, respondToPlan } = useActionPlanStore()
+
+  const isCoordinator = currentUser.role === 'coordinator'
+  const [showEditModal, setShowEditModal] = useState(false)
 
   const validTabs: Tab[] = ['overview', 'scenarios', 'action_plan']
   const tabParam = searchParams.get('tab') as Tab | null
@@ -172,7 +176,15 @@ export function RiskDetailPage() {
       {tab === 'overview' && (
         <div className={styles.overviewTab}>
           <div className={styles.descCard}>
-            <h3 className={styles.descTitle}>Опис</h3>
+            <div className={styles.descCardHeader}>
+              <h3 className={styles.descTitle}>Опис</h3>
+              {isCoordinator && (
+                <button onClick={() => setShowEditModal(true)} className={styles.editRiskBtn}>
+                  <Pencil className="w-3.5 h-3.5" />
+                  Редагувати
+                </button>
+              )}
+            </div>
             <p className={styles.descText}>{risk.description}</p>
             {risk.causes && (
               <div className={styles.descSection}>
@@ -667,6 +679,12 @@ export function RiskDetailPage() {
         </div>
       )}
 
+      {showEditModal && (
+        <EditRiskModal
+          risk={risk}
+          onClose={() => setShowEditModal(false)}
+        />
+      )}
       {showVotingModal && (
         <VotingSetupModal
           onClose={() => setShowVotingModal(false)}

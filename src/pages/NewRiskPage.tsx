@@ -32,6 +32,7 @@ export function NewRiskPage() {
     causes: '',
     consequences: '',
     reviewPeriod: '' as ReviewPeriod | '',
+    owner: '',
   })
 
   const voters = users.filter((u) => u.role === 'voter')
@@ -53,7 +54,7 @@ export function NewRiskPage() {
       status: 'voting_in_progress',
       likelihood: null,
       impact: null,
-      owner: 'u1',
+      owner: form.owner || undefined,
     })
 
     const participants: VoteParticipant[] = selected.map((id) => ({
@@ -113,6 +114,21 @@ export function NewRiskPage() {
               className={styles.select}
             >
               {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            </select>
+          </div>
+          <div>
+            <label className={styles.fieldLabel}>Власник ризику</label>
+            <select
+              value={form.owner}
+              onChange={(e) => setForm({ ...form, owner: e.target.value })}
+              className={styles.select}
+            >
+              <option value="">Власник відсутній</option>
+              {users.map((u) => (
+                <option key={u.id} value={u.id}>
+                  {u.name} — {u.shortTitle}
+                </option>
+              ))}
             </select>
           </div>
           <div>
